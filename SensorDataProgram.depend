@@ -1,0 +1,131 @@
+# depslib dependency file v1.0
+1781950510 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/Date.cpp
+	"Date.h"
+
+1781950505 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/Date.h
+	<iostream>
+	<string>
+
+1781950525 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/Time.cpp
+	"Time.h"
+
+1781950934 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/Time.h
+
+1781948981 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/main.cpp
+	"Date.h"
+	"Time.h"
+	"Vector.h"
+	<iostream>
+	<fstream>
+	<limits>
+	<sstream>
+	<string>
+	<iomanip>
+	<cmath>
+
+1781895558 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/Vector.h
+	<stdexcept>
+
+1781951225 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/SensorDataProgram/TimeTest.cpp
+	"Time.h"
+	<iomanip>
+	<iostream>
+
+1782133757 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/Date.cpp
+	"Date.h"
+
+1782542146 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/Date.h
+
+1782055028 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/Time.cpp
+	"Time.h"
+
+1782053335 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/Time.h
+
+1782128027 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/DataRecord.cpp
+	"DataRecord.h"
+
+1782385444 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/DataRecord.h
+	"Date.h"
+	"Time.h"
+
+1782638696 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/main.cpp
+	"Date.h"
+	"Vector.h"
+	"DataRecord.h"
+	"DataLog.h"
+	<iostream>
+	<fstream>
+	<limits>
+	<sstream>
+	<string>
+	<iomanip>
+	<cmath>
+
+1782560684 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/Vector.h
+	<stdexcept>
+
+1782560675 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/DataLog.cpp
+	"DataLog.h"
+
+1782322508 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/DataLog.h
+	"Time.h"
+	"Date.h"
+	"Vector.h"
+	"DataRecord.h"
+
+1782545818 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/DataLogTest.cpp
+	"DataLog.h"
+	<iomanip>
+	<iostream>
+
+1782625090 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/VectorTest.cpp
+	<iostream>
+	"Vector.h"
+
+1782544394 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment1/DataRecordTest.cpp
+	"DataRecord.h"
+	<iostream>
+	<iomanip>
+
+1782822167 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/DataLog.cpp
+	"DataLog.h"
+
+1782820455 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/DataLog.h
+	"Time.h"
+	"Date.h"
+	"Vector.h"
+	"DataRecord.h"
+
+1782820896 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/Time.h
+
+1782824041 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/Date.h
+
+1782818957 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/Vector.h
+	<stdexcept>
+
+1782820993 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/DataRecord.h
+	"Date.h"
+	"Time.h"
+
+1782128027 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/DataRecord.cpp
+	"DataRecord.h"
+
+1782820842 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/Date.cpp
+	"Date.h"
+
+1782820968 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/Time.cpp
+	"Time.h"
+
+1782821779 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Topic8Q4/main.cpp
+	"Date.h"
+	"Vector.h"
+	"DataRecord.h"
+	"DataLog.h"
+	<iostream>
+	<fstream>
+	<limits>
+	<sstream>
+	<string>
+	<iomanip>
+	<cmath>
+
