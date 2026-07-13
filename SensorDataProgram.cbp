@@ -34,6 +34,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="CSVWrapper.cpp" />
+		<Unit filename="CSVWrapper.h" />
 		<Unit filename="DataLog.cpp" />
 		<Unit filename="DataLog.h" />
 		<Unit filename="DataLogTest.cpp">
