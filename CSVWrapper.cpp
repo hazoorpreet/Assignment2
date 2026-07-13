@@ -31,6 +31,7 @@ void CSVWrapper::Close() {
 }
 
 void CSVWrapper::ExtractByColumns(const Vector<int> & column_numbers) {
+    m_file.seekg(0, std::ios::beg);
     m_extraction_columns = column_numbers;
     m_output_columns.Clear();
 

@@ -9,17 +9,16 @@
 #include <string>
 #include <iomanip>
 #include <cmath>
+#include "CSVWrapper.h"
 
-void CSVToDataLog(std::istream & input, std::string & file_name, DataLog & data_log);
+void CSVToDataLog(CSVWrapper & csv_wrapper, std::string & file_name, DataLog & data_log);
 void InputHeaderNames(Vector<std::string> & header_names);
 double CalcTotalSolarRadiation(const DataLog & data_log);
 double CalcMeanSpeed(const DataLog & data_log);
 double CalcSDSpeed(const DataLog & data_log);
 double CalcMeanTemperature(const DataLog & data_log);
 double CalcSDTemperature(const DataLog & data_log);
-void extractCSVHeaders(std::istream & csv_file, Vector<std::string> & result_vec);
-void extractCSVData(std::istream & csv_file, const Vector<std::string> & headers_to_extract, Vector<Vector<std::string>> & result_vec);
-void fillDataLog(const Vector<Vector<std::string>> & input_strings, DataLog & data_log);
+void fillDataLog(CSVWrapper & csv_wrapper, DataLog & data_log);
 bool stringToDate(const std::string & date_string, Date & date);
 bool stringToTime(const std::string & time_string, Time & time);
 void getMonthlyLogs(const DataLog & data_log, Vector<DataLog> & monthly_logs);
@@ -59,7 +58,7 @@ int main()
     data_source.open("data/data_source.txt");
     if (!data_source)
     {
-        std::cout << "File 'data_source.txt' could not be opened.\n";
+        std::cout << "File 'data/data_source.txt' could not be opened.\n";
         return 1;
     }
 
@@ -68,24 +67,24 @@ int main()
     DataLog data_log{};
     Date month;
 
-    // Topic 8 Question 4
+    CSVWrapper csv_wrapper{};
+
     while (getline(data_source, file_name, '\n'))
     {
         while (std::isspace(file_name[file_name.size() - 1]))
         {
             file_name = file_name.substr(0, file_name.size() - 1);
         }
-        data_file.open("data/" + file_name);
-        if (!data_file)
+
+        if (!csv_wrapper.Open("data/" + file_name))
         {
-            std::cout << "File " << file_name << " could not be opened.\n";
-            data_file.clear();
+            std::cout << "File data/" << file_name << " could not be opened.\n";
             continue;
         }
 
         std::cout << "Beginning to load data from file, please wait...\n";
-        CSVToDataLog(data_file, file_name, data_log);
-        data_file.close();
+        CSVToDataLog(csv_wrapper, file_name, data_log);
+        csv_wrapper.Close();
         // Algorithm ends here
 
         // Additional Helpful information for usage of program
@@ -100,6 +99,7 @@ int main()
             std::cout << "\n\n";
         }
     }
+    data_source.close();
 
     Vector<DataLog> monthly_logs;
     getMonthlyLogs(data_log, monthly_logs);
@@ -182,17 +182,15 @@ int NumInput(const std::string & prompt, int minimum, int maximum)
     return input;
 }
 
-void CSVToDataLog(std::istream & input, std::string & file_name, DataLog & data_log)
+void CSVToDataLog(CSVWrapper & csv_wrapper, std::string & file_name, DataLog & data_log)
 {
     Vector<std::string> headers_to_extract{HEADERS_SIZE};
     std::cout << "Please enter the headers for file " << file_name << "\n\n";
     InputHeaderNames(headers_to_extract);
 
-    Vector<Vector<std::string>> input_strings;
-    extractCSVData(input, headers_to_extract, input_strings);
+    csv_wrapper.ExtractByHeaders(headers_to_extract);
 
-    fillDataLog(input_strings, data_log);
-    input_strings.Clear();
+    fillDataLog(csv_wrapper, data_log);
 }
 
 void InputHeaderNames(Vector<std::string> & header_names)
@@ -231,17 +229,17 @@ void InputHeaderNames(Vector<std::string> & header_names)
     }
 }
 
-void fillDataLog(const Vector<Vector<std::string>> & input_strings, DataLog & data_log)
+void fillDataLog(CSVWrapper & csv_wrapper, DataLog & data_log)
 {
+    Vector<std::string> input_vector;
     DataRecord data_record;
     Date date;
     Time time;
-    for (int i{0}; i < input_strings.Size(); i++)
+    while (csv_wrapper.GetLine(input_vector))
     {
-
         // Date & Time input
-        if (stringToDate(input_strings[i][HEADERS_WAST].substr(0, input_strings[i][HEADERS_WAST].find(' ')), date) &&
-                stringToTime(input_strings[i][HEADERS_WAST].substr(input_strings[i][HEADERS_WAST].find(' ') + 1), time))
+        if (stringToDate(input_vector[HEADERS_WAST].substr(0, input_vector[HEADERS_WAST].find(' ')), date) &&
+                stringToTime(input_vector[HEADERS_WAST].substr(input_vector[HEADERS_WAST].find(' ') + 1), time))
         {
             data_record.SetDate(date);
             data_record.SetTime(time);
@@ -255,7 +253,7 @@ void fillDataLog(const Vector<Vector<std::string>> & input_strings, DataLog & da
         // if conversions fail, enter number less than the minimum value.
         try
         {
-            double solar_radiation = stod(input_strings[i][HEADERS_SOLAR_RADIATION]);
+            double solar_radiation = stod(input_vector[HEADERS_SOLAR_RADIATION]);
             if (solar_radiation < 100)   // skip values less than 100 W/m^2
             {
                 data_record.SetSolarRadiation(DataRecord::MIN_VAL - 1);
@@ -272,7 +270,7 @@ void fillDataLog(const Vector<Vector<std::string>> & input_strings, DataLog & da
 
         try
         {
-            data_record.SetSpeed(stod(input_strings[i][HEADERS_SPEED]) * 3.6); // m/s to km/h
+            data_record.SetSpeed(stod(input_vector[HEADERS_SPEED]) * 3.6); // m/s to km/h
         }
         catch (std::exception & e)
         {
@@ -281,7 +279,7 @@ void fillDataLog(const Vector<Vector<std::string>> & input_strings, DataLog & da
 
         try
         {
-            data_record.SetTemperature(stod(input_strings[i][HEADERS_TEMPERATURE]));
+            data_record.SetTemperature(stod(input_vector[HEADERS_TEMPERATURE]));
         }
         catch (std::exception & e)
         {
@@ -457,117 +455,6 @@ double CalcSDTemperature(const DataLog & data_log)
     return sqrt(processed_sum / ((data_log.Size() - sensor_errs) - 1));
 }
 
-void extractCSVHeaders(std::istream & csv_file, Vector<std::string> & result_vec)
-{
-    result_vec.Clear();
-    csv_file.clear();
-    csv_file.seekg(0, std::ios::beg);
-
-    std::string header_string;
-    getline(csv_file, header_string);
-    std::stringstream header_stream{header_string};
-    std::string header;
-    while (getline(header_stream, header, ','))
-    {
-        result_vec.Insert(result_vec.Size(), header);
-    }
-
-    // correct for newline at the end
-    std::string & final_header = result_vec[result_vec.Size() - 1];
-    final_header = final_header.substr(0, final_header.length() - 1);
-}
-
-void extractCSVData(std::istream & csv_file, const Vector<std::string> & headers_to_extract, Vector<Vector<std::string>> & result_vec)
-{
-    result_vec.Clear();
-    Vector<std::string> file_headers;
-    int extraction_size = headers_to_extract.Size();
-    extractCSVHeaders(csv_file, file_headers);
-    Vector<int> header_mappings{extraction_size};
-    for (int i{0}; i < extraction_size; i++)
-    {
-        int header_location{-1};
-        for (int j{0}; j < file_headers.Size(); j++)
-        {
-            if (file_headers[j].compare(headers_to_extract[i]) == 0)
-            {
-                header_location = j;
-                break;
-            }
-        }
-        header_mappings[i] = header_location;
-    }
-
-    // insertion sort of header locations along with adding mappings according to output order.
-    Vector<int> sorted_location_to_output_position{extraction_size};
-    sorted_location_to_output_position[0] = 0;
-    for (int i{1}; i < extraction_size; i++)
-    {
-        int val = header_mappings[i];
-        for (int j{i - 1}; j >= -1; j--)
-        {
-            if (j <= -1)
-            {
-                header_mappings[0] = val;
-                sorted_location_to_output_position[0] = i;
-                break;
-            }
-            else if (header_mappings[j] > val)
-            {
-                header_mappings[j + 1] = header_mappings[j];
-                sorted_location_to_output_position[j + 1] = sorted_location_to_output_position[j];
-            }
-            else
-            {
-                header_mappings[j + 1] = val;
-                sorted_location_to_output_position[j + 1] = i;
-                break;
-            }
-        }
-    }
-
-    std::string csv_line;
-    std::stringstream line_stream;
-    while (getline(csv_file, csv_line, '\n'))
-    {
-        if (csv_line.empty())
-        {
-            continue;
-        }
-        line_stream.str("");
-        line_stream.clear();
-        line_stream << csv_line;
-        result_vec.Insert(result_vec.Size(), {extraction_size});
-        int prev_mapping{-1};
-        for (int i{0}; i < extraction_size; i++)
-        {
-            if (header_mappings[i] == -1)
-            {
-                result_vec[result_vec.Size() - 1][sorted_location_to_output_position[i]] = "";
-            }
-            else
-            {
-                for (int j{prev_mapping + 1}; j < header_mappings[i]; j++)
-                {
-                    line_stream.ignore(std::numeric_limits<std::streamsize>::max(), ',');
-                }
-                getline(line_stream,result_vec[result_vec.Size() - 1][sorted_location_to_output_position[i]], ',');
-
-                // correct for newline at the end
-                if (header_mappings[i] == (file_headers.Size() - 1))
-                {
-                    std::string & end_correction = result_vec[result_vec.Size() - 1][sorted_location_to_output_position[i]];
-                    end_correction = end_correction.substr(0, end_correction.length() - 1);
-                }
-                else
-                {
-                    prev_mapping = header_mappings[i];
-                }
-            }
-        }
-    }
-}
-
 void getMonthlyLogs(const DataLog & data_log, Vector<DataLog> & monthly_logs)
 {
     Date min_month;
@@ -630,7 +517,7 @@ void outputMonthWindSpeed(const Vector<DataLog> & monthly_logs, Date selected_mo
     {
 
         monthly_logs[i].GetMinMonth(month);
-        if (month.GetYear() == selected_month.GetYear() && month.GetMonth() == selected_month.GetMonth() && monthly_logs.Size() > 0)
+        if (month.GetYear() == selected_month.GetYear() && month.GetMonth() == selected_month.GetMonth() && monthly_logs[i].Size() > 0)
         {
             month_index = i;
             break;

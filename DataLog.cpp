@@ -5,10 +5,12 @@ void DataLog::GetMinMonth(Date & month) const
 {
     month = m_min_month;
 }
+
 void DataLog::GetMaxMonth(Date & month) const
 {
     month = m_max_month;
 }
+
 void DataLog::GetMonthData(DataLog & other, const Date & month) const
 {
     other.Clear();
@@ -18,11 +20,11 @@ void DataLog::GetMonthData(DataLog & other, const Date & month) const
         m_records[i].GetDate(record_date);
         if (month_compare(month, record_date) == 0)
         {
-            // Insert directly due to already being deduplicated
-            other.m_records.Insert(other.Size(), m_records[i]);
+            other.AddRecord(m_records[i]);
         }
     }
 }
+
 bool DataLog::AddRecord(const DataRecord & record)
 {
     if (in_list(record)) {
