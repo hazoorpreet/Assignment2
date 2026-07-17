@@ -1,7 +1,8 @@
-#include "Date.h"
-#include "Vector.h"
+#include "CSVWrapper.h"
 #include "DataRecord.h"
 #include "DataLog.h"
+#include "Date.h"
+#include "Vector.h"
 #include <iostream>
 #include <fstream>
 #include <limits>
@@ -9,7 +10,6 @@
 #include <string>
 #include <iomanip>
 #include <cmath>
-#include "CSVWrapper.h"
 
 void CSVToDataLog(CSVWrapper & csv_wrapper, std::string & file_name, DataLog & data_log);
 void InputHeaderNames(Vector<std::string> & header_names);
