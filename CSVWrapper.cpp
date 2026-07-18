@@ -201,10 +201,12 @@ bool CSVWrapper::GetLine(Vector<std::string> & line_data) {
                 prev_mapping = m_extraction_columns[i];
 
                 // correct in case of newline at the end
-                if (line_data[m_output_columns[i]][line_data[m_output_columns[i]].length() - 1] == '\n')
-                {
-                    std::string & end_correction = line_data[m_output_columns[i]];
-                    end_correction = end_correction.substr(0, end_correction.length() - 1);
+                if (!line_data[m_output_columns[i]].empty()) {
+                    if (line_data[m_output_columns[i]].back() == '\n')
+                    {
+                        std::string & end_correction = line_data[m_output_columns[i]];
+                        end_correction = end_correction.substr(0, end_correction.length() - 1);
+                    }
                 }
             }
         }
