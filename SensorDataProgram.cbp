@@ -36,7 +36,10 @@
 		</Compiler>
 		<Unit filename="CSVWrapper.cpp" />
 		<Unit filename="CSVWrapper.h" />
-		<Unit filename="CSVWrapperTest.cpp" />
+		<Unit filename="CSVWrapperTest.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="DataLog.cpp" />
 		<Unit filename="DataLog.h" />
 		<Unit filename="DataLogTest.cpp">
@@ -55,6 +58,11 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="Map.h" />
+		<Unit filename="MapTest.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="Time.cpp" />
 		<Unit filename="Time.h" />
 		<Unit filename="TimeTest.cpp">
@@ -66,10 +74,7 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="main.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
