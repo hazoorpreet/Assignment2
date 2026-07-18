@@ -1,7 +1,5 @@
 #include "Date.h"
 
-using namespace std;
-
 Date::Date(): m_day(1), m_month(1), m_year(2000) {}
 
 Date::Date(int day, int month, int year): m_day(day), m_month(month), m_year(year) {}
@@ -36,9 +34,40 @@ void Date::SetYear(int year)
     m_year = year;
 }
 
-bool Date::operator==(const Date & other) {
-    return (m_year == other.m_year) && (m_month == other.m_month) && (m_day == other.m_day);
- }
+bool Date::operator==(const Date & other) const
+{
+    return ((m_day == other.m_day) && (m_month == other.m_month) && (m_year == other.m_year));
+}
+
+bool Date::operator<(const Date & other) const
+{
+    return ((m_year < other.m_year) || // year case
+            ((m_year == other.m_year) && // if year is the same
+             ((m_month < other.m_month) || // month case
+              ((m_month == other.m_month) && (m_day < other.m_day)) // date case
+             )
+            )
+           );
+}
+
+bool Date::operator>(const Date & other) const
+{
+    return ((m_year > other.m_year) || // year case
+            ((m_year == other.m_year) && // if year is the same
+             ((m_month > other.m_month) || // month case
+              ((m_month == other.m_month) && (m_day > other.m_day)) // date case
+             )
+            )
+           );
+}
+
+bool Date::operator>=(const Date & other) const {
+    return (*this == other) || (*this > other);
+}
+
+bool Date::operator<=(const Date & other) const {
+    return (*this == other) || (*this < other);
+}
 
 const char * MonthString(int month)
 {

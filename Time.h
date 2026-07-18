@@ -4,7 +4,7 @@
 /** @brief Time class modeled after 24h digital clock time.
  *
  * @author Hazoorpreet Singh
- * @date 04/06/2026
+ * @date 18/07/2026
  *
  */
 class Time
@@ -59,7 +59,31 @@ public:
      *
      * @param[in] other Other time to compare against
      */
-     bool operator==(const Time & other);
+     bool operator==(const Time & other) const;
+
+     /** @brief Compare greater than
+     *
+     * @param[in] other Other time to compare against
+     */
+     bool operator>(const Time & other) const;
+
+     /** @brief Compare less than
+     *
+     * @param[in] other Other time to compare against
+     */
+     bool operator<(const Time & other) const;
+
+     /** @brief Compare greater than or equal
+     *
+     * @param[in] other Other time to compare against
+     */
+     bool operator>=(const Time & other) const;
+
+     /** @brief Compare less than or equal
+     *
+     * @param[in] other Other time to compare against
+     */
+     bool operator<=(const Time & other) const;
 
 private:
     int m_hours;

@@ -26,6 +26,36 @@ void Time::SetSeconds(int seconds)
     m_seconds = seconds;
 }
 
-bool Time::operator==(const Time & other) {
+bool Time::operator==(const Time & other) const {
     return (m_hours == other.m_hours) && (m_minutes == other.m_minutes) && (m_seconds == other.m_seconds);
+}
+
+bool Time::operator<(const Time & other) const
+{
+    return ((m_hours < other.m_hours) || // year case
+            ((m_hours == other.m_hours) && // if year is the same
+             ((m_minutes < other.m_minutes) || // month case
+              ((m_minutes == other.m_minutes) && (m_seconds < other.m_seconds)) // date case
+             )
+            )
+           );
+}
+
+bool Time::operator>(const Time & other) const
+{
+    return ((m_hours > other.m_hours) || // year case
+            ((m_hours == other.m_hours) && // if year is the same
+             ((m_minutes > other.m_minutes) || // month case
+              ((m_minutes == other.m_minutes) && (m_seconds > other.m_seconds)) // date case
+             )
+            )
+           );
+}
+
+bool Time::operator>=(const Time & other) const {
+    return (*this == other) || (*this > other);
+}
+
+bool Time::operator<=(const Time & other) const {
+    return (*this == other) || (*this < other);
 }

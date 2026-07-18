@@ -1,10 +1,12 @@
 #ifndef DATE_H
 #define DATE_H
 
+using namespace std;
+
 /** @brief Modeled after Date information
  *
  * @author Hazoorpreet Singh
- * @date 04/06/2026
+ * @date 5/07/2026
  *
  */
 class Date
@@ -59,11 +61,36 @@ public:
      */
     void SetYear(int year);
 
-    /** @brief Compare equality of dates
+    /** @brief Equality Comparison
      *
-     * @param[in] other Other date to compare against
+     * @param[in] other - Other date to compare against
      */
-     bool operator==(const Date & other);
+    bool operator==(const Date & other) const;
+
+    /** @brief Less Than Comparison
+     *
+     * @param[in] other - Other date to compare against
+     */
+    bool operator<(const Date & other) const;
+
+    /** @brief More Than Comparison
+     *
+     * @param[in] other - Other date to compare against
+     */
+    bool operator>(const Date & other) const;
+
+    /** @brief More Than or Equal Comparison
+     *
+     * @param[in] other - Other date to compare against
+     */
+    bool operator>=(const Date & other) const;
+
+    /** @brief Less Than or Equal Comparison
+     *
+     * @param[in] other - Other date to compare against
+     */
+    bool operator<=(const Date & other) const;
+
 
 private:
     int m_day;
