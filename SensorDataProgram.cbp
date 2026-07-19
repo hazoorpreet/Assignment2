@@ -41,12 +41,6 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="DataLog.cpp" />
-		<Unit filename="DataLog.h" />
-		<Unit filename="DataLogTest.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="DataRecord.cpp" />
 		<Unit filename="DataRecord.h" />
 		<Unit filename="DataRecordDatabase.cpp" />
