@@ -19,17 +19,19 @@ bool stringToDate(const std::string & date_string, Date & date);
 bool stringToTime(const std::string & time_string, Time & time);
 void outputMonthWindSpeed(const DataRecordDatabase & database, Date selected_month);
 void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year);
-void outputMonthlySolarRad(const DataRecordDatabase & database, int selected_year);
+void outputsPCCComparisons(const DataRecordDatabase & database, int selected_month);
 void outputYearData(std::ostream & output, const DataRecordDatabase & database, int selected_year);
 void DisplayMenu();
 int NumInput(const std::string & prompt, int minimum, int maximum);
+template <typename T, typename U>
+void GetCorrelatableObjectData(const Vector<T> & items, Vector<U> & data_a, Vector<U> & data_b, U(T::*get_data_a)() const, U(T::*get_data_b)() const, U min_val);
 
 enum MENU: int
 {
     MENU_MIN = 1,
     MENU_WIND_SPEED = 1,
     MENU_AIR_TEMPERATURE = 2,
-    MENU_SOLAR_RADIATION = 3,
+    MENU_SPCC = 3,
     MENU_YEAR_DATA = 4,
     MENU_EXIT = 5,
     MENU_MAX = 5
@@ -101,8 +103,8 @@ int main()
         case MENU_AIR_TEMPERATURE:
             outputMonthlyAirTemp(database, NumInput("Please enter a year (1-9999): ", 1, 9999));
             break;
-        case MENU_SOLAR_RADIATION:
-            outputMonthlySolarRad(database, NumInput("Please enter a year (1-9999): ", 1, 9999));
+        case MENU_SPCC:
+            outputsPCCComparisons(database, NumInput("Please enter a month (1-12): ", 1, 12));
             break;
         case MENU_YEAR_DATA:
             output.open("data/WindTempSolar.csv");
@@ -134,7 +136,7 @@ void DisplayMenu()
     std::cout << "------------------ Menu ------------------\n"
          << "1. Wind Speed Average for a single month.\n"
          << "2. Air Temperature Average for each month of a year.\n"
-         << "3. Total Solar Radiation for each month of a year.\n"
+         << "3. Sample Pearson Correlation Coefficient of data\n"
          << "4. Output all data for a year into a file.\n"
          << "5. Exit.\n"
          << "------------------------------------------\n";
@@ -359,30 +361,60 @@ void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year
     }
 }
 
-void outputMonthlySolarRad(const DataRecordDatabase & database, int selected_year)
-{
-    std::cout << selected_year << '\n';
 
-    Date month{};
-    month.SetYear(selected_year);
-    Vector<double> solar_radiation{};
+void outputsPCCComparisons(const DataRecordDatabase & database, int selected_month) {
 
-    for (int i{1}; i <= 12; i++)
-    {
-        std::cout << MonthString(i) << ": ";
-        month.SetMonth(i);
-        database.GetMonthSolarRadiation(month, solar_radiation);
-
-        if (solar_radiation.Size() == 0)
-        {
-            std::cout << "No Data\n";
-            continue;
-        }
-
-        double total = VectorDataOperations::CalcTotal(solar_radiation);
-        std::cout << total << " kWh/m\u00B2\n";
-        solar_radiation.Clear();
+    std::cout << std::fixed << std::setprecision(3);
+    std::cout << "Sample Pearson Correlation Coefficient for " << MonthString(selected_month) << '\n';
+    Vector<int> years;
+    Vector<DataRecord> month_data;
+    database.GetYears(years);
+    for (int i{0}; i < years.Size(); i++) {
+        database.GetMonthRecords({0, selected_month, years[i]}, month_data);
     }
+
+    Vector<double> data_a{};
+    Vector<double> data_b{};
+
+    if (month_data.Size() == 0) {
+        std::cout << "No data for this month.\n\n";
+        return;
+    }
+
+    VectorDataOperations::getCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetTemperature, DataRecord::MIN_VAL);
+
+    std::cout << "S_T: ";
+    if (data_a.Size() == 0) {
+        std::cout << "No correlative data.\n";
+    } else {
+        std::cout << VectorDataOperations::CalcsPCC(data_a, data_b) << '\n';
+        data_a.Clear();
+        data_b.Clear();
+    }
+
+    VectorDataOperations::getCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
+
+    std::cout << "S_R: ";
+    if (data_a.Size() == 0) {
+        std::cout << "No correlative data.\n";
+    } else {
+        std::cout << VectorDataOperations::CalcsPCC(data_a, data_b) << '\n';
+        data_a.Clear();
+        data_b.Clear();
+    }
+
+    VectorDataOperations::getCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetTemperature, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
+
+    std::cout << "T_R: ";
+    if (data_a.Size() == 0) {
+        std::cout << "No correlative data.\n";
+    } else {
+        std::cout << VectorDataOperations::CalcsPCC(data_a, data_b) << '\n';
+        data_a.Clear();
+        data_b.Clear();
+    }
+
+    std::cout << std::fixed << std::setprecision(1);
 }
 
 void outputYearData(std::ostream & output, const DataRecordDatabase & database, int selected_year)
