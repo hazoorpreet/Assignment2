@@ -129,7 +129,7 @@
 	<iomanip>
 	<cmath>
 
-1783943799 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapper.cpp
+1784390059 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapper.cpp
 	"CSVWrapper.h"
 	<sstream>
 	<limits>
@@ -152,7 +152,7 @@
 	"Vector.h"
 	"DataRecord.h"
 
-1784363121 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.h
+1784363142 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.h
 
 1784345662 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Date.h
 
@@ -166,10 +166,10 @@
 1784345685 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Date.cpp
 	"Date.h"
 
-1783145723 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.cpp
+1784363105 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.cpp
 	"Time.h"
 
-1783944779 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/main.cpp
+1784381551 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/main.cpp
 	"CSVWrapper.h"
 	"DataRecord.h"
 	"DataLog.h"
@@ -182,9 +182,40 @@
 	<string>
 	<iomanip>
 	<cmath>
+	"DataRecordDatabase.h"
 
 1783943720 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapperTest.cpp
 	<iostream>
 	"CSVWrapper.h"
 	"Vector.h"
+
+1784454380 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecordDatabase.h
+	"DataRecord.h"
+	"Bst.h"
+	"Map.h"
+	"Date.h"
+	"Time.h"
+	"Vector.h"
+
+1784202405 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Bst.h
+
+1784374822 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Map.h
+	<map>
+
+1784454854 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecordDatabaseTest.cpp
+	"CSVWrapper.h"
+	"DataRecord.h"
+	"Date.h"
+	"Vector.h"
+	<iostream>
+	<fstream>
+	<limits>
+	<sstream>
+	<string>
+	<iomanip>
+	<cmath>
+	"DataRecordDatabase.h"
+
+1784454477 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecordDatabase.cpp
+	"DataRecordDatabase.h"
 
