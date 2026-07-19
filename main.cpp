@@ -381,7 +381,7 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
         return;
     }
 
-    VectorDataOperations::getCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetTemperature, DataRecord::MIN_VAL);
+    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetTemperature, DataRecord::MIN_VAL);
 
     std::cout << "S_T: ";
     if (data_a.Size() == 0) {
@@ -392,7 +392,7 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
         data_b.Clear();
     }
 
-    VectorDataOperations::getCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
+    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
 
     std::cout << "S_R: ";
     if (data_a.Size() == 0) {
@@ -403,7 +403,7 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
         data_b.Clear();
     }
 
-    VectorDataOperations::getCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetTemperature, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
+    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetTemperature, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
 
     std::cout << "T_R: ";
     if (data_a.Size() == 0) {
