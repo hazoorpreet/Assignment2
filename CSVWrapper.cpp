@@ -5,8 +5,10 @@
 
 CSVWrapper::CSVWrapper(): m_extraction_columns{0}, m_output_columns{0}, m_file{} {}
 
-bool CSVWrapper::Open(const std::string & file_name) {
-    if (m_file.is_open()) {
+bool CSVWrapper::Open(const std::string & file_name)
+{
+    if (m_file.is_open())
+    {
         return false;
     }
 
@@ -17,20 +19,24 @@ bool CSVWrapper::Open(const std::string & file_name) {
     m_file.clear();
     m_file.open(file_name);
 
-    if (!m_file) {
+    if (!m_file)
+    {
         m_file.clear();
         return false;
     }
     return true;
 }
 
-void CSVWrapper::Close() {
-    if (m_file.is_open()) {
+void CSVWrapper::Close()
+{
+    if (m_file.is_open())
+    {
         m_file.close();
     }
 }
 
-void CSVWrapper::ExtractByColumns(const Vector<int> & column_numbers) {
+void CSVWrapper::ExtractByColumns(const Vector<int> & column_numbers)
+{
     m_file.seekg(0, std::ios::beg);
     m_extraction_columns = column_numbers;
     m_output_columns.Clear();
@@ -61,21 +67,25 @@ void CSVWrapper::ExtractByColumns(const Vector<int> & column_numbers) {
     }
 }
 
-void CSVWrapper::ExtractByColumns() {
+void CSVWrapper::ExtractByColumns()
+{
     ExtractByHeaders();
     m_file.seekg(0, std::ios::beg);
 }
 
-void CSVWrapper::ExtractByHeaders() {
+void CSVWrapper::ExtractByHeaders()
+{
     Vector<std::string> file_headers;
     ExtractFileHeaders(file_headers);
-    for (int i{file_headers.Size() - 1}; i >= 0; i--) {
+    for (int i{file_headers.Size() - 1}; i >= 0; i--)
+    {
         m_extraction_columns.Insert(0, i);
         m_output_columns.Insert(0, i);
     }
 }
 
-void CSVWrapper::ExtractByHeaders(const Vector<std::string> & headers) {
+void CSVWrapper::ExtractByHeaders(const Vector<std::string> & headers)
+{
     Vector<std::string> file_headers;
     ExtractFileHeaders(file_headers);
 
@@ -113,7 +123,8 @@ void CSVWrapper::ExtractByHeaders(const Vector<std::string> & headers) {
     }
 }
 
-void CSVWrapper::ExtractFileHeaders(Vector<std::string> & file_headers) {
+void CSVWrapper::ExtractFileHeaders(Vector<std::string> & file_headers)
+{
     file_headers.Clear();
     m_file.clear();
     m_file.seekg(0, std::ios::beg);
@@ -132,17 +143,20 @@ void CSVWrapper::ExtractFileHeaders(Vector<std::string> & file_headers) {
     final_header = final_header.substr(0, final_header.length() - 1);
 }
 
-bool CSVWrapper::Eof() const {
+bool CSVWrapper::Eof() const
+{
 
     // if not open that means it is the end.
-    if (!m_file.is_open()) {
+    if (!m_file.is_open())
+    {
         return true;
     }
 
     return m_file.eof();
 }
 
-bool CSVWrapper::SeekLine(int line_num) {
+bool CSVWrapper::SeekLine(int line_num)
+{
     // reset position
     m_file.clear();
     m_file.seekg(0, std::ios::beg);
@@ -157,15 +171,18 @@ bool CSVWrapper::SeekLine(int line_num) {
     return !m_file.eof();
 }
 
-bool CSVWrapper::GetLine(Vector<std::string> & line_data) {
-    if ((m_extraction_columns.Size() == 0)) {
+bool CSVWrapper::GetLine(Vector<std::string> & line_data)
+{
+    if ((m_extraction_columns.Size() == 0))
+    {
         return false;
     }
 
     std::string csv_line;
     line_data.Clear();
 
-    while (line_data.Size() < m_extraction_columns.Size()) {
+    while (line_data.Size() < m_extraction_columns.Size())
+    {
         line_data.Insert(0,"");
     }
 
@@ -192,7 +209,8 @@ bool CSVWrapper::GetLine(Vector<std::string> & line_data) {
                 }
 
                 // return extracted data if line reaches end
-                if (line_stream.eof()) {
+                if (line_stream.eof())
+                {
                     return true;
                 }
 
@@ -201,7 +219,8 @@ bool CSVWrapper::GetLine(Vector<std::string> & line_data) {
                 prev_mapping = m_extraction_columns[i];
 
                 // correct in case of newline at the end
-                if (!line_data[m_output_columns[i]].empty()) {
+                if (!line_data[m_output_columns[i]].empty())
+                {
                     if (line_data[m_output_columns[i]].back() == '\n')
                     {
                         std::string & end_correction = line_data[m_output_columns[i]];
@@ -210,7 +229,9 @@ bool CSVWrapper::GetLine(Vector<std::string> & line_data) {
                 }
             }
         }
-    } else {
+    }
+    else
+    {
         return false;
     }
     return true;
