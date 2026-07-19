@@ -1,8 +1,6 @@
 #ifndef DATE_H
 #define DATE_H
 
-using namespace std;
-
 /** @brief Modeled after Date information
  *
  * @author Hazoorpreet Singh
