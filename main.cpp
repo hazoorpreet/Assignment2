@@ -1,8 +1,9 @@
 #include "CSVWrapper.h"
 #include "DataRecord.h"
-#include "DataLog.h"
+#include "DataRecordDatabase.h"
 #include "Date.h"
 #include "Vector.h"
+#include "VectorDataOperations.h"
 #include <iostream>
 #include <fstream>
 #include <limits>
@@ -11,26 +12,17 @@
 #include <iomanip>
 #include <cmath>
 
-void CSVToDataLog(CSVWrapper & csv_wrapper, std::string & file_name, DataLog & data_log);
+void CSVToDatabase(CSVWrapper & csv_wrapper, std::string & file_name, DataRecordDatabase & database);
 void InputHeaderNames(Vector<std::string> & header_names);
-double CalcTotalSolarRadiation(const DataLog & data_log);
-double CalcMeanSpeed(const DataLog & data_log);
-double CalcSDSpeed(const DataLog & data_log);
-double CalcMeanTemperature(const DataLog & data_log);
-double CalcSDTemperature(const DataLog & data_log);
-void fillDataLog(CSVWrapper & csv_wrapper, DataLog & data_log);
+void fillDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database);
 bool stringToDate(const std::string & date_string, Date & date);
 bool stringToTime(const std::string & time_string, Time & time);
-void getMonthlyLogs(const DataLog & data_log, Vector<DataLog> & monthly_logs);
-void extractYear(const Vector<DataLog> & monthly_logs, Vector<const DataLog *> & months, int selected_year);
-void outputMonthWindSpeed(const Vector<DataLog> & monthly_logs, Date selected_month);
-void outputMonthlyAirTemp(const Vector<DataLog> & monthly_logs, int selected_year);
-void outputMonthlySolarRad(const Vector<DataLog> & monthly_logs, int selected_year);
-void outputYearData(std::ostream & output, const Vector<DataLog> & monthly_logs, int selected_year);
+void outputMonthWindSpeed(const DataRecordDatabase & database, Date selected_month);
+void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year);
+void outputMonthlySolarRad(const DataRecordDatabase & database, int selected_year);
+void outputYearData(std::ostream & output, const DataRecordDatabase & database, int selected_year);
 void DisplayMenu();
 int NumInput(const std::string & prompt, int minimum, int maximum);
-
-const double DATA_EMPTY = -100; // unreasonably low value to indicate empty
 
 enum MENU: int
 {
@@ -54,6 +46,8 @@ enum HEADERS: int
 
 int main()
 {
+    // set up output
+    std::cout << std::fixed << std::setprecision(1);
     std::ifstream data_source;
     data_source.open("data/data_source.txt");
     if (!data_source)
@@ -64,7 +58,7 @@ int main()
 
     std::ifstream data_file;
     std::string file_name;
-    DataLog data_log{};
+    DataRecordDatabase database{};
     Date month;
 
     CSVWrapper csv_wrapper{};
@@ -82,28 +76,12 @@ int main()
             continue;
         }
 
-        std::cout << "Beginning to load data from file, please wait...\n";
-        CSVToDataLog(csv_wrapper, file_name, data_log);
+        CSVToDatabase(csv_wrapper, file_name, database);
         csv_wrapper.Close();
-        // Algorithm ends here
 
-        // Additional Helpful information for usage of program
-        std::cout << "Data Loaded:\n";
-        std::cout << "Total Records: " << data_log.Size() << '\n';
-        if (data_log.Size() > 0)
-        {
-            data_log.GetMinMonth(month);
-            std::cout << "Min Month: " << MonthString(month.GetMonth()) << ' ' << month.GetYear() << '\n';
-            data_log.GetMaxMonth(month);
-            std::cout << "Max Month: " << MonthString(month.GetMonth()) << ' ' << month.GetYear() << '\n';
-            std::cout << "\n\n";
-        }
+        std::cout << "Total Records: " << database.Size() << "\n\n";
     }
     data_source.close();
-
-    Vector<DataLog> monthly_logs;
-    getMonthlyLogs(data_log, monthly_logs);
-    data_log.Clear();
 
     bool repeat{true};
     Date input_date;
@@ -118,13 +96,13 @@ int main()
             input_date.SetYear(NumInput("Please enter a year (1-9999): ", 1, 9999));
             input_date.SetMonth(NumInput("Please enter a month (1-12): ", 1, 12));
 
-            outputMonthWindSpeed(monthly_logs, input_date);
+            outputMonthWindSpeed(database, input_date);
             break;
         case MENU_AIR_TEMPERATURE:
-            outputMonthlyAirTemp(monthly_logs, NumInput("Please enter a year (1-9999): ", 1, 9999));
+            outputMonthlyAirTemp(database, NumInput("Please enter a year (1-9999): ", 1, 9999));
             break;
         case MENU_SOLAR_RADIATION:
-            outputMonthlySolarRad(monthly_logs, NumInput("Please enter a year (1-9999): ", 1, 9999));
+            outputMonthlySolarRad(database, NumInput("Please enter a year (1-9999): ", 1, 9999));
             break;
         case MENU_YEAR_DATA:
             output.open("data/WindTempSolar.csv");
@@ -133,7 +111,7 @@ int main()
                 std::cout << "Could not open output file \"data/WindTempSolar.csv\".";
                 break;
             }
-            outputYearData(output, monthly_logs, NumInput("Please enter a year (1-9999): ", 1, 9999));
+            outputYearData(output, database, NumInput("Please enter a year (1-9999): ", 1, 9999));
             output.close();
             std::cout << "Data exported into data/WindTempSolar.csv\n\n";
             break;
@@ -182,7 +160,7 @@ int NumInput(const std::string & prompt, int minimum, int maximum)
     return input;
 }
 
-void CSVToDataLog(CSVWrapper & csv_wrapper, std::string & file_name, DataLog & data_log)
+void CSVToDatabase(CSVWrapper & csv_wrapper, std::string & file_name, DataRecordDatabase & database)
 {
     Vector<std::string> headers_to_extract{HEADERS_SIZE};
     std::cout << "Please enter the headers for file " << file_name << "\n\n";
@@ -190,7 +168,7 @@ void CSVToDataLog(CSVWrapper & csv_wrapper, std::string & file_name, DataLog & d
 
     csv_wrapper.ExtractByHeaders(headers_to_extract);
 
-    fillDataLog(csv_wrapper, data_log);
+    fillDatabase(csv_wrapper, database);
 }
 
 void InputHeaderNames(Vector<std::string> & header_names)
@@ -229,7 +207,7 @@ void InputHeaderNames(Vector<std::string> & header_names)
     }
 }
 
-void fillDataLog(CSVWrapper & csv_wrapper, DataLog & data_log)
+void fillDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database)
 {
     Vector<std::string> input_vector;
     DataRecord data_record;
@@ -286,7 +264,7 @@ void fillDataLog(CSVWrapper & csv_wrapper, DataLog & data_log)
             data_record.SetTemperature(DataRecord::MIN_VAL - 1);
         }
 
-        data_log.AddRecord(data_record);
+        database.Insert(data_record);
     }
 }
 
@@ -334,344 +312,140 @@ bool stringToTime(const std::string & time_string, Time & time)
     return true;
 }
 
-double CalcTotalSolarRadiation(const DataLog & data_log)
-{
-    double total = 0;
-    int sensor_errs = 0;
-    for (int i = 0; i < data_log.Size(); i++)
-    {
-        if (data_log[i].GetSolarRadiation() < DataRecord::MIN_VAL)
-        {
-            sensor_errs++;
-        }
-        else
-        {
-            total += data_log[i].GetSolarRadiation();
-        }
-    }
-
-    if ((data_log.Size() - sensor_errs) == 0)
-    {
-        return DATA_EMPTY;
-    }
-
-    return total;
-}
-
-double CalcMeanSpeed(const DataLog & data_log)
-{
-    double total = 0;
-    int sensor_errs = 0;
-    for (int i = 0; i < data_log.Size(); i++)
-    {
-        if (data_log[i].GetSpeed() < DataRecord::MIN_VAL)
-        {
-            sensor_errs++;
-        }
-        else
-        {
-            total += data_log[i].GetSpeed();
-        }
-    }
-
-    if ((data_log.Size() - sensor_errs) == 0)
-    {
-        return DATA_EMPTY;
-    }
-    return total / (data_log.Size() - sensor_errs);
-}
-
-double CalcSDSpeed(const DataLog & data_log)
-{
-    double mean = CalcMeanSpeed(data_log);
-
-    double processed_sum = 0;
-    int sensor_errs = 0;
-    for (int i = 0; i < data_log.Size(); i++)
-    {
-        if (data_log[i].GetSpeed() < DataRecord::MIN_VAL)
-        {
-            sensor_errs++;
-        }
-        else
-        {
-            processed_sum += (data_log[i].GetSpeed() - mean) * (data_log[i].GetSpeed() - mean);
-        }
-    }
-
-    if ((data_log.Size() - sensor_errs) == 0)
-    {
-        return DATA_EMPTY;
-    }
-    return sqrt(processed_sum / ((data_log.Size() - sensor_errs) - 1));
-}
-
-double CalcMeanTemperature(const DataLog & data_log)
-{
-    double total = 0;
-    int sensor_errs = 0;
-    for (int i = 0; i < data_log.Size(); i++)
-    {
-        if (data_log[i].GetTemperature() < DataRecord::MIN_VAL)
-        {
-            sensor_errs++;
-        }
-        else
-        {
-            total += data_log[i].GetTemperature();
-        }
-    }
-
-    if ((data_log.Size() - sensor_errs) == 0)
-    {
-        return DATA_EMPTY;
-    }
-
-    return total / (data_log.Size() - sensor_errs);
-}
-
-double CalcSDTemperature(const DataLog & data_log)
-{
-    double mean = CalcMeanTemperature(data_log);
-
-    double processed_sum = 0;
-    int sensor_errs = 0;
-    for (int i = 0; i < data_log.Size(); i++)
-    {
-        if (data_log[i].GetTemperature() < DataRecord::MIN_VAL)
-        {
-            sensor_errs++;
-        }
-        else
-        {
-            processed_sum += (data_log[i].GetTemperature() - mean) * (data_log[i].GetTemperature() - mean);
-        }
-    }
-
-    if ((data_log.Size() - sensor_errs) == 0)
-    {
-        return DATA_EMPTY;
-    }
-    return sqrt(processed_sum / ((data_log.Size() - sensor_errs) - 1));
-}
-
-void getMonthlyLogs(const DataLog & data_log, Vector<DataLog> & monthly_logs)
-{
-    Date min_month;
-    Date max_month;
-    data_log.GetMinMonth(min_month);
-    data_log.GetMaxMonth(max_month);
-
-    Date ret_month = min_month;
-    DataLog month_log;
-    while ((ret_month.GetMonth() <= max_month.GetMonth()) || (ret_month.GetYear() < max_month.GetYear()))
-    {
-        data_log.GetMonthData(month_log, ret_month);
-        if (month_log.Size() > 0)
-        {
-            monthly_logs.Insert(monthly_logs.Size(), month_log);
-        }
-
-        if (ret_month.GetMonth() < 12)
-        {
-            ret_month.SetMonth(ret_month.GetMonth() + 1);
-        }
-        else
-        {
-            ret_month.SetMonth(1);
-            ret_month.SetYear(ret_month.GetYear() + 1);
-        }
-    }
-}
-
-void extractYear(const Vector<DataLog> & monthly_logs, Vector<const DataLog *> & months, int selected_year)
-{
-    months.Clear();
-    while (months.Size() < 12)
-    {
-        months.Insert(months.Size(), nullptr);
-    }
-
-    Date month;
-
-    for (int i{0}; i < monthly_logs.Size(); i++)
-    {
-
-        monthly_logs[i].GetMinMonth(month);
-
-        if ((month.GetYear() == selected_year) && (monthly_logs[i].Size() > 0))
-        {
-            months[month.GetMonth() - 1] = &(monthly_logs[i]);
-        }
-    }
-}
-
-void outputMonthWindSpeed(const Vector<DataLog> & monthly_logs, Date selected_month)
+void outputMonthWindSpeed(const DataRecordDatabase & database, Date selected_month)
 {
     std::cout << MonthString(selected_month.GetMonth()) << ' ' << selected_month.GetYear() << ':';
 
-    Date month;
+    Vector<double> wind_speeds{};
+    database.GetMonthSpeed(selected_month, wind_speeds);
 
-    int month_index{-1};
-    for (int i{0}; i < monthly_logs.Size(); i++)
-    {
-
-        monthly_logs[i].GetMinMonth(month);
-        if (month.GetYear() == selected_month.GetYear() && month.GetMonth() == selected_month.GetMonth() && monthly_logs[i].Size() > 0)
-        {
-            month_index = i;
-            break;
-        }
-    }
-
-    if (month_index <= -1)
-    {
+    if (wind_speeds.Size() == 0) {
         std::cout << " No Data\n\n";
         return;
     }
 
-    double mean = CalcMeanSpeed(monthly_logs[month_index]);
-    double sd = CalcSDSpeed(monthly_logs[month_index]);
+    double mean = VectorDataOperations::CalcMean(wind_speeds);
+    double sd = VectorDataOperations::CalcSD(wind_speeds);
 
-    if (mean <= DATA_EMPTY)
-    {
-        std::cout << " No Data\n\n";
-    }
-    else
-    {
-        std::cout << "\nAverage speed: " << mean << " km/h"
-             << "\nSample stdev: " << sd << "\n\n";
-    }
+    std::cout << "\nAverage speed: " << mean << " km/h"
+              << "\nSample stdev: " << sd << "\n\n";
 }
 
-void outputMonthlyAirTemp(const Vector<DataLog> & monthly_logs, int selected_year)
+void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year)
 {
     std::cout << selected_year << '\n';
 
-    Vector<const DataLog *> months{0};
-    extractYear(monthly_logs, months, selected_year);
+    Date month{};
+    month.SetYear(selected_year);
+    Vector<double> temperatures{};
 
-    for (int i{0}; i < months.Size(); i++)
+    for (int i{1}; i <= 12; i++)
     {
+        std::cout << MonthString(i) << ": ";
+        month.SetMonth(i);
+        database.GetMonthTemperature(month, temperatures);
 
-        if (months[i] == nullptr)
+        if (temperatures.Size() == 0)
         {
-            std::cout << MonthString(i + 1) << ": No Data\n";
+            std::cout << "No Data\n";
             continue;
         }
 
-        std::cout << MonthString(i + 1) << ": ";
-
-        double mean = CalcMeanTemperature(*(months[i]));
-        double sd = CalcSDTemperature(*(months[i]));
-
-        if (mean <= DATA_EMPTY)
-        {
-            std::cout << "No Data\n";
-        }
-        else
-        {
-            std::cout << "average: " << mean << " degrees C"
-                 << ", stdev: " << sd << '\n';
-        }
+        double mean = VectorDataOperations::CalcMean(temperatures);
+        double sd = VectorDataOperations::CalcSD(temperatures);
+        std::cout << "average: " << mean << " degrees C"
+                  << ", stdev: " << sd << '\n';
     }
 }
 
-void outputMonthlySolarRad(const Vector<DataLog> & monthly_logs, int selected_year)
+void outputMonthlySolarRad(const DataRecordDatabase & database, int selected_year)
 {
     std::cout << selected_year << '\n';
 
-    Vector<const DataLog *> months{0};
-    extractYear(monthly_logs, months, selected_year);
+    Date month{};
+    month.SetYear(selected_year);
+    Vector<double> solar_radiation{};
 
-    for (int i{0}; i < months.Size(); i++)
+    for (int i{1}; i <= 12; i++)
     {
+        std::cout << MonthString(i) << ": ";
+        month.SetMonth(i);
+        database.GetMonthSolarRadiation(month, solar_radiation);
 
-        if (months[i] == nullptr)
+        if (solar_radiation.Size() == 0)
         {
-            std::cout << MonthString(i + 1) << ": No Data\n";
+            std::cout << "No Data\n";
             continue;
         }
 
-        std::cout << MonthString(i + 1) << ": ";
-
-        double total = CalcTotalSolarRadiation(*(months[i]));
-
-        if (total <= DATA_EMPTY)
-        {
-            std::cout << "No Data\n";
-        }
-        else
-        {
-            std::cout << total << " kWh/m\u00B2\n";
-        }
+        double total = VectorDataOperations::CalcTotal(solar_radiation);
+        std::cout << total << " kWh/m\u00B2\n";
     }
 }
 
-void outputYearData(std::ostream & output, const Vector<DataLog> & monthly_logs, int selected_year)
+void outputYearData(std::ostream & output, const DataRecordDatabase & database, int selected_year)
 {
     output << std::fixed << std::setprecision(1);
     output << selected_year << '\n';
 
-    Vector<const DataLog *> months{0};
-    extractYear(monthly_logs, months, selected_year);
+    Date month{0,0,selected_year};
 
-    for (int i{0}; i <= 12; i++)
+    Vector<Vector<double>> solar_radiation{12};
+    Vector<Vector<double>> wind_speeds{12};
+    Vector<Vector<double>> temperatures{12};
+
+    for (int i{1}; i <= 12; i++)
     {
-        if (i == 12)
-        {
+        month.SetMonth(i);
+        database.GetMonthSolarRadiation(month, solar_radiation[i-1]);
+        database.GetMonthSpeed(month, wind_speeds[i-1]);
+        database.GetMonthTemperature(month, temperatures[i-1]);
+    }
+
+    for (int i{0}; i <= 12; i++) {
+        if (i == 12) {
             output << "No Data";
             return;
         }
-        else if (months[i] != nullptr)
-        {
+
+        if (solar_radiation[i].Size() || wind_speeds[i].Size() || temperatures[i].Size()) {
+            // break out of loop if there is any data
             break;
         }
     }
 
-    for (int i{0}; i < months.Size(); i++)
+    for (int i{0}; i < 12; i++)
     {
-
-        if (months[i] == nullptr)
+        // skip if no data
+        if (!(solar_radiation[i].Size() || wind_speeds[i].Size() || temperatures[i].Size()))
         {
             continue;
         }
 
         output << MonthString(i + 1) << ",";
 
-        double mean = CalcMeanSpeed(*(months[i]));
-        double sd = CalcSDSpeed(*(months[i]));
-
-        if (mean <= DATA_EMPTY)
-        {
+        double mean{};
+        double sd{};
+        if (wind_speeds[i].Size()) {
+            mean = VectorDataOperations::CalcMean(wind_speeds[i]);
+            sd = VectorDataOperations::CalcSD(wind_speeds[i]);
+            output << mean << '(' << sd << "),";
+        } else {
             output << " ,";
         }
-        else
-        {
+
+        if (temperatures[i].Size()) {
+            mean = VectorDataOperations::CalcMean(temperatures[i]);
+            sd = VectorDataOperations::CalcMean(temperatures[i]);
             output << mean << '(' << sd << "),";
-        }
-
-        mean = CalcMeanTemperature(*(months[i]));
-        sd = CalcSDTemperature(*(months[i]));
-
-        if (mean <= DATA_EMPTY)
-        {
+        } else {
             output << " ,";
         }
-        else
-        {
-            output << mean << '(' << sd << "),";
-        }
 
-        double total = CalcTotalSolarRadiation(*(months[i]));
-
-        if (total <= DATA_EMPTY)
-        {
+        if (solar_radiation[i].Size()) {
+            output << VectorDataOperations::CalcTotal(solar_radiation[i]) << '\n';
+        } else {
             output << " \n";
-        }
-        else
-        {
-            output << total << '\n';
         }
     }
 }

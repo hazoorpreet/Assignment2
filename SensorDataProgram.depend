@@ -219,3 +219,11 @@
 1784454477 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecordDatabase.cpp
 	"DataRecordDatabase.h"
 
+1784458212 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.cpp
+	"VectorDataOperations.h"
+	<stdexcept>
+
+1784458025 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.h
+	"Vector.h"
+	<cmath>
+
