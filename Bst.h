@@ -181,7 +181,7 @@ private:
      * @param[in] node - Node to rebalance
      * @param[in] inserted_node - Node being inserted
      */
-    static Node * Rebalance(Node * node, Node * inserted_node);
+    static Node * Rebalance(Node * node, const Node * inserted_node);
 
     /** @brief Left rotate a branch
      *
@@ -211,7 +211,7 @@ int Bst<T>::max(int a, int b) {
 }
 
 template <typename T> typename
-Bst<T>::Node * Bst<T>::Rebalance(Node * node, Node * inserted_node)
+Bst<T>::Node * Bst<T>::Rebalance(Node * node, const Node * inserted_node)
 {
     int node_balance = NodeBalance(node);
     if (node_balance > 1)
@@ -304,6 +304,9 @@ Bst<T>::Bst(const Bst<T> & other): m_root{nullptr}
 template <typename T>
 Bst<T> & Bst<T>::operator=(const Bst<T> & other)
 {
+    if (this == &other) {
+        return *this;
+    }
     Clear();
     if (other.m_root != nullptr)
     {
