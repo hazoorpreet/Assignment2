@@ -51,14 +51,23 @@ public:
 
     void Clear();
 
-private:
-    Map<int, Map<int,  Bst<DatabaseRecord>>> m_db;
-    int m_size;
-    static Vector<double> * collector;
+    virtual ~DataRecordDatabase();
 
+private:
+    Map<int, Map<int,  Bst<DatabaseRecord>>> m_db; /// Database
+    int m_size; /// Number of records in database
+
+    // Collectors, pointers as it will have the same effect as copying
+    // but takes less memory
+    static Vector<double> * data_collector;
+    static Vector<DataRecord> * record_collector;
+    static const Date * record_collection_month;
+
+    // Collection functions CANNOT BE MULTITHREADED. They will conflict as they are pointing to the same collectors.
     static void CollectSolarRadiation(const DatabaseRecord & database_record);
     static void CollectSpeed(const DatabaseRecord & database_record);
     static void CollectTemperature(const DatabaseRecord & database_record);
+    static void CollectRecords(const DatabaseRecord & database_record);
     bool WalkMonth(const Date & date, void (*func)(const DatabaseRecord &)) const;
 };
 
