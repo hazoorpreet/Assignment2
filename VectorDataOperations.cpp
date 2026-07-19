@@ -1,5 +1,4 @@
 #include "VectorDataOperations.h"
-#include <stdexcept>
 
 double VectorDataOperations::CalcTotal(const Vector<double> & data)
 {
@@ -26,7 +25,7 @@ double VectorDataOperations::CalcSD(const Vector<double> & data) {
         processed_sum += (data[i] - mean) * (data[i] - mean);
     }
 
-    return sqrt(processed_sum / (data.Size() - 1));
+    return std::sqrt(processed_sum / (data.Size() - 1));
 }
 
 double VectorDataOperations::CalcsPCC(const Vector<double> & data_a, const Vector<double> & data_b) {

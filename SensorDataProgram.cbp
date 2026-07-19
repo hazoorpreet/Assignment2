@@ -51,7 +51,10 @@
 		<Unit filename="DataRecord.h" />
 		<Unit filename="DataRecordDatabase.cpp" />
 		<Unit filename="DataRecordDatabase.h" />
-		<Unit filename="DataRecordDatabaseTest.cpp" />
+		<Unit filename="DataRecordDatabaseTest.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="DataRecordTest.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -74,14 +77,13 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="Vector.h" />
+		<Unit filename="VectorDataOperations.cpp" />
+		<Unit filename="VectorDataOperations.h" />
 		<Unit filename="VectorTest.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="main.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

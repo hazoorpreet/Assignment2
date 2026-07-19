@@ -2,6 +2,7 @@
 #define VECTORDATAOPERATIONS_H
 #include "Vector.h"
 #include <cmath>
+#include <stdexcept>
 
 class VectorDataOperations {
 public:
