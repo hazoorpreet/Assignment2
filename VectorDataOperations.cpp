@@ -29,7 +29,7 @@ double VectorDataOperations::CalcSD(const Vector<double> & data) {
 }
 
 double VectorDataOperations::CalcsPCC(const Vector<double> & data_a, const Vector<double> & data_b) {
-    if (data_a.Size() == data_b.Size()) {
+    if (data_a.Size() != data_b.Size()) {
         throw std::domain_error("Error: Samples are of different sizes.");
     }
 
