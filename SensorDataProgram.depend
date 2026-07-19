@@ -169,7 +169,7 @@
 1784363105 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.cpp
 	"Time.h"
 
-1784465943 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/main.cpp
+1784474581 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/main.cpp
 	"CSVWrapper.h"
 	"DataRecord.h"
 	"DataRecordDatabase.h"
@@ -197,7 +197,7 @@
 	"Time.h"
 	"Vector.h"
 
-1784202405 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Bst.h
+1784474546 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Bst.h
 
 1784374822 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Map.h
 	<map>
@@ -222,7 +222,7 @@
 1784471815 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.cpp
 	"VectorDataOperations.h"
 
-1784473017 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.h
+1784473728 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.h
 	"Vector.h"
 	<cmath>
 	<stdexcept>

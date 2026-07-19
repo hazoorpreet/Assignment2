@@ -2,9 +2,9 @@
 #include <iostream>
 #include <iomanip>
 
-std::ostream & operator<<(std::ostream & output, Date date);
-std::ostream & operator<<(std::ostream & output, Time time);
-std::ostream & operator<<(std::ostream & output, DataRecord record);
+std::ostream & operator<<(std::ostream & output, const Date & date);
+std::ostream & operator<<(std::ostream & output, const Time & time);
+std::ostream & operator<<(std::ostream & output, const DataRecord & record);
 
 int main() {
     std::cout << "Test 1: Default construction\n";
@@ -24,7 +24,7 @@ int main() {
     std::cout << record1 << '\n';
 }
 
-std::ostream & operator<<(std::ostream & output, Date date) {
+std::ostream & operator<<(std::ostream & output, const Date & date) {
     output << std::right << std::setfill('0');
     output << std::setw(2) << date.GetDay() << '/' << std::setw(2) << date.GetMonth() << '/'
          << std::setw(2) << date.GetYear();
@@ -32,7 +32,7 @@ std::ostream & operator<<(std::ostream & output, Date date) {
     return output;
 }
 
-std::ostream & operator<<(std::ostream & output, Time time) {
+std::ostream & operator<<(std::ostream & output, const Time & time) {
     output << std::right << std::setfill('0');
     output << std::setw(2) << time.GetHours() << ':' << std::setw(2) << time.GetMinutes() << ':'
            << std::setw(2) << time.GetSeconds();
@@ -41,7 +41,7 @@ std::ostream & operator<<(std::ostream & output, Time time) {
 }
 
 
-std::ostream & operator<<(std::ostream & output, DataRecord record) {
+std::ostream & operator<<(std::ostream & output, const DataRecord & record) {
     Date date;
     Time time;
     record.GetDate(date);

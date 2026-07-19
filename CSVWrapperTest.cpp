@@ -2,7 +2,7 @@
 #include "CSVWrapper.h"
 #include "Vector.h"
 
-std::ostream & operator<<(std::ostream & output, Vector<std::string> data);
+std::ostream & operator<<(std::ostream & output, const Vector<std::string> & data);
 
 int main() {
     Vector<std::string> headers_to_extract{};
@@ -62,7 +62,7 @@ int main() {
     return 0;
 }
 
-std::ostream & operator<<(std::ostream & output, Vector<std::string> data) {
+std::ostream & operator<<(std::ostream & output, const Vector<std::string> & data) {
     for (int i{0}; i < data.Size(); i++) {
         output << data[i] << ' ';
     }
