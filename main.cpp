@@ -286,7 +286,7 @@ bool stringToDate(const std::string & date_string, Date & date)
         date.SetMonth(stoi(date_string.substr(div1 + 1, div2)));
         date.SetYear(stoi(date_string.substr(div2 + 1)));
     }
-    catch (std::exception & e)
+    catch (const std::exception & e)
     {
         return false;
     }
@@ -307,7 +307,7 @@ bool stringToTime(const std::string & time_string, Time & time)
         time.SetHours(stoi(time_string.substr(0, div)));
         time.SetMinutes(stoi(time_string.substr(div + 1)));
     }
-    catch (std::exception & e)
+    catch (const std::exception & e)
     {
         return false;
     }

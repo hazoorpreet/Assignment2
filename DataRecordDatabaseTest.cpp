@@ -11,7 +11,7 @@
 #include <cmath>
 #include "DataRecordDatabase.h"
 
-void CSVToDatabase(CSVWrapper & csv_wrapper, std::string & file_name, DataRecordDatabase & database);
+void CSVToDatabase(CSVWrapper & csv_wrapper, const std::string & file_name, DataRecordDatabase & database);
 void InputHeaderNames(Vector<std::string> & header_names);
 void fillDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database);
 bool stringToDate(const std::string & date_string, Date & date);
@@ -49,10 +49,8 @@ int main()
     }
     std::cout << std::setprecision(1) << std::fixed << std::setfill('0');
 
-    std::ifstream data_file;
     std::string file_name;
     DataRecordDatabase database{};
-
     CSVWrapper csv_wrapper{};
 
     std::cout << "Test 1: Loading data\n";
@@ -136,7 +134,7 @@ int main()
 }
 
 
-void CSVToDatabase(CSVWrapper & csv_wrapper, std::string & file_name, DataRecordDatabase & database)
+void CSVToDatabase(CSVWrapper & csv_wrapper, const std::string & file_name, DataRecordDatabase & database)
 {
     Vector<std::string> headers_to_extract{HEADERS_SIZE};
     std::cout << "Please enter the headers for file " << file_name << "\n\n";
@@ -260,7 +258,7 @@ bool stringToDate(const std::string & date_string, Date & date)
         date.SetMonth(stoi(date_string.substr(div1 + 1, div2)));
         date.SetYear(stoi(date_string.substr(div2 + 1)));
     }
-    catch (std::exception & e)
+    catch (const std::exception & e)
     {
         return false;
     }
@@ -281,7 +279,7 @@ bool stringToTime(const std::string & time_string, Time & time)
         time.SetHours(stoi(time_string.substr(0, div)));
         time.SetMinutes(stoi(time_string.substr(div + 1)));
     }
-    catch (std::exception & e)
+    catch (const std::exception & e)
     {
         return false;
     }
