@@ -355,6 +355,7 @@ void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year
         double sd = VectorDataOperations::CalcSD(temperatures);
         std::cout << "average: " << mean << " degrees C"
                   << ", stdev: " << sd << '\n';
+        temperatures.Clear();
     }
 }
 
@@ -380,6 +381,7 @@ void outputMonthlySolarRad(const DataRecordDatabase & database, int selected_yea
 
         double total = VectorDataOperations::CalcTotal(solar_radiation);
         std::cout << total << " kWh/m\u00B2\n";
+        solar_radiation.Clear();
     }
 }
 
@@ -387,37 +389,26 @@ void outputYearData(std::ostream & output, const DataRecordDatabase & database, 
 {
     output << std::fixed << std::setprecision(1);
     output << selected_year << '\n';
+    if (!database.HasYear(selected_year)) {
+        output << "No Data";
+        return;
+    }
 
     Date month{0,0,selected_year};
 
-    Vector<Vector<double>> solar_radiation{12};
-    Vector<Vector<double>> wind_speeds{12};
-    Vector<Vector<double>> temperatures{12};
-
-    for (int i{1}; i <= 12; i++)
-    {
-        month.SetMonth(i);
-        database.GetMonthSolarRadiation(month, solar_radiation[i-1]);
-        database.GetMonthSpeed(month, wind_speeds[i-1]);
-        database.GetMonthTemperature(month, temperatures[i-1]);
-    }
-
-    for (int i{0}; i <= 12; i++) {
-        if (i == 12) {
-            output << "No Data";
-            return;
-        }
-
-        if (solar_radiation[i].Size() || wind_speeds[i].Size() || temperatures[i].Size()) {
-            // break out of loop if there is any data
-            break;
-        }
-    }
+    Vector<double> solar_radiation{};
+    Vector<double> wind_speeds{};
+    Vector<double> temperatures{};
 
     for (int i{0}; i < 12; i++)
     {
-        // skip if no data
-        if (!(solar_radiation[i].Size() || wind_speeds[i].Size() || temperatures[i].Size()))
+        month.SetMonth(i + 1);
+        database.GetMonthSolarRadiation(month, solar_radiation);
+        database.GetMonthSpeed(month, wind_speeds);
+        database.GetMonthTemperature(month, temperatures);
+
+        // skip empty months
+        if (!(solar_radiation.Size() || wind_speeds.Size() || temperatures.Size()))
         {
             continue;
         }
@@ -426,24 +417,27 @@ void outputYearData(std::ostream & output, const DataRecordDatabase & database, 
 
         double mean{};
         double sd{};
-        if (wind_speeds[i].Size()) {
-            mean = VectorDataOperations::CalcMean(wind_speeds[i]);
-            sd = VectorDataOperations::CalcSD(wind_speeds[i]);
+        if (wind_speeds.Size()) {
+            mean = VectorDataOperations::CalcMean(wind_speeds);
+            sd = VectorDataOperations::CalcSD(wind_speeds);
             output << mean << '(' << sd << "),";
+            wind_speeds.Clear();
         } else {
             output << " ,";
         }
 
-        if (temperatures[i].Size()) {
-            mean = VectorDataOperations::CalcMean(temperatures[i]);
-            sd = VectorDataOperations::CalcMean(temperatures[i]);
+        if (temperatures.Size()) {
+            mean = VectorDataOperations::CalcMean(temperatures);
+            sd = VectorDataOperations::CalcSD(temperatures);
             output << mean << '(' << sd << "),";
+            temperatures.Clear();
         } else {
             output << " ,";
         }
 
-        if (solar_radiation[i].Size()) {
-            output << VectorDataOperations::CalcTotal(solar_radiation[i]) << '\n';
+        if (solar_radiation.Size()) {
+            output << VectorDataOperations::CalcTotal(solar_radiation) << '\n';
+            solar_radiation.Clear();
         } else {
             output << " \n";
         }

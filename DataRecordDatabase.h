@@ -46,6 +46,8 @@ public:
     bool GetMonthSpeed(const Date & date, Vector<double> & values) const;
     bool GetMonthTemperature(const Date & date, Vector<double> & values) const;
     bool GetMonthRecords(const Date & date, Vector<DataRecord> & records) const;
+    void GetYears(Vector<int> & years) const;
+    bool HasYear(int year) const;
 
     int Size();
 
@@ -56,18 +58,23 @@ public:
 private:
     Map<int, Map<int,  Bst<DatabaseRecord>>> m_db; /// Database
     int m_size; /// Number of records in database
+    Bst<int> m_years;
 
     // Collectors, pointers as it will have the same effect as copying
     // but takes less memory
     static Vector<double> * data_collector;
+
     static Vector<DataRecord> * record_collector;
     static const Date * record_collection_month;
+
+    static Vector<int> * years_collector;
 
     // Collection functions CANNOT BE MULTITHREADED. They will conflict as they are pointing to the same collectors.
     static void CollectSolarRadiation(const DatabaseRecord & database_record);
     static void CollectSpeed(const DatabaseRecord & database_record);
     static void CollectTemperature(const DatabaseRecord & database_record);
     static void CollectRecords(const DatabaseRecord & database_record);
+    static void CollectYears(const int & years);
     bool WalkMonth(const Date & date, void (*func)(const DatabaseRecord &)) const;
 };
 

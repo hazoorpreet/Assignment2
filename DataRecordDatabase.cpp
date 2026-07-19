@@ -3,15 +3,17 @@
 Vector<double> * DataRecordDatabase::data_collector{nullptr};
 Vector<DataRecord> * DataRecordDatabase::record_collector{nullptr};
 const Date * DataRecordDatabase::record_collection_month{nullptr};
+Vector<int> * DataRecordDatabase::years_collector{nullptr};
 
 
 int DataRecordDatabase::Size() {return m_size;}
 
-DataRecordDatabase::DataRecordDatabase(): m_db{}, m_size{} {};
+DataRecordDatabase::DataRecordDatabase(): m_db{}, m_size{}, m_years{} {};
 
 void DataRecordDatabase::Clear() {
     m_db.Clear();
     m_size = 0;
+    m_years.Clear();
 }
 
 bool DataRecordDatabase::Insert(const DataRecord & data_record) {
@@ -19,6 +21,7 @@ bool DataRecordDatabase::Insert(const DataRecord & data_record) {
     data_record.GetDate(date);
     if (!m_db.Find(date.GetYear())) {
         m_db.Emplace(date.GetYear(), {});
+        m_years.Insert(date.GetYear());
     }
 
     if (!m_db[date.GetYear()].Find(date.GetMonth())) {
@@ -64,6 +67,12 @@ bool DataRecordDatabase::GetMonthRecords(const Date & date, Vector<DataRecord> &
     return success;
 }
 
+void DataRecordDatabase::GetYears(Vector<int> & years) const {
+    years_collector = &years;
+    m_years.InOrder(DataRecordDatabase::CollectYears);
+    years_collector = nullptr;
+}
+
 void DataRecordDatabase::CollectSolarRadiation(const DatabaseRecord & database_record) {
     double solar_radiation = database_record.GetSolarRadiation();
     if (solar_radiation >= DataRecord::MIN_VAL) {
@@ -93,6 +102,10 @@ void DataRecordDatabase::CollectRecords(const DatabaseRecord & database_record) 
     record_collector->Insert(record_collector->Size(), data_record);
 }
 
+void DataRecordDatabase::CollectYears(const int & year) {
+    years_collector->Insert(years_collector->Size(), year);
+}
+
 bool DataRecordDatabase::WalkMonth(const Date & date, void (*func)(const DatabaseRecord &)) const {
     if (!m_db.Find(date.GetYear())) {
         return false;
@@ -104,6 +117,10 @@ bool DataRecordDatabase::WalkMonth(const Date & date, void (*func)(const Databas
 
     m_db[date.GetYear()][date.GetMonth()].InOrder(func);
     return true;
+}
+
+bool DataRecordDatabase::HasYear(int year) const {
+    return m_db.Find(year);
 }
 
 DataRecordDatabase::~DataRecordDatabase() {}; // no action required as map and bst will clean themselves up.
@@ -162,3 +179,4 @@ bool DataRecordDatabase::DatabaseRecord::operator>(const DatabaseRecord & other)
 bool DataRecordDatabase::DatabaseRecord::operator==(const DatabaseRecord & other) const {
     return (m_day == other.m_day) && (m_time == other.m_time);
 }
+
