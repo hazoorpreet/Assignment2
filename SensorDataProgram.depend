@@ -129,13 +129,13 @@
 	<iomanip>
 	<cmath>
 
-1784390059 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapper.cpp
+1784475671 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapper.cpp
 	"CSVWrapper.h"
 	<sstream>
 	<limits>
 	<iostream>
 
-1783936533 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapper.h
+1784475879 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/CSVWrapper.h
 	"Vector.h"
 	<string>
 	<fstream>
@@ -222,7 +222,7 @@
 1784471815 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.cpp
 	"VectorDataOperations.h"
 
-1784473728 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.h
+1784629942 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/VectorDataOperations.h
 	"Vector.h"
 	<cmath>
 	<stdexcept>

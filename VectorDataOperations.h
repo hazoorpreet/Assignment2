@@ -14,12 +14,12 @@ public:
     static double CalcMAD(const Vector<double> & data);
     template <typename T, typename U>
     static void GetCorrelatableObjectData(const Vector<T> & items, Vector<U> & data_a,
-                                          Vector<U> & data_b, U(T::*get_data_a)() const, U(T::*get_data_b)() const, U min_val)
+                                          Vector<U> & data_b, U(T::*get_data_a)() const, U(T::*get_data_b)() const, U flag_val, bool(*flag_comparison)(U data,U flag))
     {
 
         for (int i{0}; i < items.Size(); i++)
         {
-            if (((items[i].*get_data_a)() < min_val) || ((items[i].*get_data_b)() < min_val))
+            if (flag_comparison((items[i].*get_data_a)(), flag_val) || flag_comparison((items[i].*get_data_b)(), flag_val))
             {
                 continue;
             }

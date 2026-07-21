@@ -134,12 +134,12 @@ int main()
 void DisplayMenu()
 {
     std::cout << "------------------ Menu ------------------\n"
-         << "1. Wind Speed Average for a single month.\n"
-         << "2. Air Temperature Average for each month of a year.\n"
-         << "3. Sample Pearson Correlation Coefficient of data\n"
-         << "4. Output all data for a year into a file.\n"
-         << "5. Exit.\n"
-         << "------------------------------------------\n";
+              << "1. Wind Speed Average for a single month.\n"
+              << "2. Air Temperature Average for each month of a year.\n"
+              << "3. Sample Pearson Correlation Coefficient of data\n"
+              << "4. Output all data for a year into a file.\n"
+              << "5. Exit.\n"
+              << "------------------------------------------\n";
 }
 
 int NumInput(const std::string & prompt, int minimum, int maximum)
@@ -321,7 +321,8 @@ void outputMonthWindSpeed(const DataRecordDatabase & database, Date selected_mon
     Vector<double> wind_speeds{};
     database.GetMonthSpeed(selected_month, wind_speeds);
 
-    if (wind_speeds.Size() == 0) {
+    if (wind_speeds.Size() == 0)
+    {
         std::cout << " No Data\n\n";
         return;
     }
@@ -362,53 +363,73 @@ void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year
 }
 
 
-void outputsPCCComparisons(const DataRecordDatabase & database, int selected_month) {
+void outputsPCCComparisons(const DataRecordDatabase & database, int selected_month)
+{
 
     std::cout << std::fixed << std::setprecision(3);
     std::cout << "Sample Pearson Correlation Coefficient for " << MonthString(selected_month) << '\n';
     Vector<int> years;
     Vector<DataRecord> month_data;
     database.GetYears(years);
-    for (int i{0}; i < years.Size(); i++) {
+    for (int i{0}; i < years.Size(); i++)
+    {
         database.GetMonthRecords({0, selected_month, years[i]}, month_data);
     }
+
+    bool(*min_val_comparison)(double,double)
+    {
+        [](double value, double flag) -> bool
+        {
+            return value < flag;
+        }
+    };
 
     Vector<double> data_a{};
     Vector<double> data_b{};
 
-    if (month_data.Size() == 0) {
+    if (month_data.Size() == 0)
+    {
         std::cout << "No data for this month.\n\n";
         return;
     }
 
-    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetTemperature, DataRecord::MIN_VAL);
+    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetTemperature, DataRecord::MIN_VAL, min_val_comparison);
 
     std::cout << "S_T: ";
-    if (data_a.Size() == 0) {
+    if (data_a.Size() == 0)
+    {
         std::cout << "No correlative data.\n";
-    } else {
+    }
+    else
+    {
         std::cout << VectorDataOperations::CalcsPCC(data_a, data_b) << '\n';
         data_a.Clear();
         data_b.Clear();
     }
 
-    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
+    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetSpeed, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL, min_val_comparison);
 
     std::cout << "S_R: ";
-    if (data_a.Size() == 0) {
+    if (data_a.Size() == 0)
+    {
         std::cout << "No correlative data.\n";
-    } else {
+    }
+    else
+    {
         std::cout << VectorDataOperations::CalcsPCC(data_a, data_b) << '\n';
         data_a.Clear();
         data_b.Clear();
     }
 
-    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetTemperature, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL);
+    VectorDataOperations::GetCorrelatableObjectData(month_data, data_a, data_b, &DataRecord::GetTemperature, &DataRecord::GetSolarRadiation, DataRecord::MIN_VAL, min_val_comparison);
 
     std::cout << "T_R: ";
-    if (data_a.Size() == 0) {
+    if (data_a.Size() == 0)
+    {
         std::cout << "No correlative data.\n";
-    } else {
+    }
+    else
+    {
         std::cout << VectorDataOperations::CalcsPCC(data_a, data_b) << '\n';
         data_a.Clear();
         data_b.Clear();
@@ -421,7 +442,8 @@ void outputYearData(std::ostream & output, const DataRecordDatabase & database, 
 {
     output << std::fixed << std::setprecision(1);
     output << selected_year << '\n';
-    if (!database.HasYear(selected_year)) {
+    if (!database.HasYear(selected_year))
+    {
         output << "No Data";
         return;
     }
@@ -449,28 +471,37 @@ void outputYearData(std::ostream & output, const DataRecordDatabase & database, 
 
         double mean{};
         double sd{};
-        if (wind_speeds.Size()) {
+        if (wind_speeds.Size())
+        {
             mean = VectorDataOperations::CalcMean(wind_speeds);
             sd = VectorDataOperations::CalcSD(wind_speeds);
             output << mean << '(' << sd << "),";
             wind_speeds.Clear();
-        } else {
+        }
+        else
+        {
             output << " ,";
         }
 
-        if (temperatures.Size()) {
+        if (temperatures.Size())
+        {
             mean = VectorDataOperations::CalcMean(temperatures);
             sd = VectorDataOperations::CalcSD(temperatures);
             output << mean << '(' << sd << "),";
             temperatures.Clear();
-        } else {
+        }
+        else
+        {
             output << " ,";
         }
 
-        if (solar_radiation.Size()) {
+        if (solar_radiation.Size())
+        {
             output << VectorDataOperations::CalcTotal(solar_radiation) << '\n';
             solar_radiation.Clear();
-        } else {
+        }
+        else
+        {
             output << " \n";
         }
     }
