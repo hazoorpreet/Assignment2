@@ -66,12 +66,6 @@ public:
     void InOrder(void(*func)(T)) const;
     void InOrder(void(*func)(const T&)) const;
 
-    /** @brief Traverse tree in Order, performing a mutating function on each item
-     *
-     * @param[in] func - Function done on each value.
-     */
-    void InOrder(void(*func)(T&));
-
     /** @brief Traverse tree in Pre Order, performing a function on each item
      *
      * @param[in] func - Function done on each value.
@@ -79,24 +73,12 @@ public:
     void PreOrder(void(*func)(T)) const;
     void PreOrder(void(*func)(const T&)) const;
 
-    /** @brief Traverse tree in Pre Order, performing a mutating function on each item
-     *
-     * @param[in] func - Function done on each value.
-     */
-    void PreOrder(void(*func)(T&));
-
     /** @brief Traverse tree in Post Order, performing a function on each item
      *
      * @param[in] func - Function done on each value.
      */
     void PostOrder(void(*func)(T)) const;
     void PostOrder(void(*func)(const T&)) const;
-
-    /** @brief Traverse tree in Post Order, performing a mutating function on each item
-     *
-     * @param[in] func - Function done on each value.
-     */
-    void PostOrder(void(*func)(T&));
 
     /** @brief Clear tree of all items.
      *
@@ -135,7 +117,6 @@ private:
      * @param[in] node - Node/subtree to apply function to
      */
     static void InOrder(void(*func)(T), Node * node);
-    static void InOrder(void(*func)(T&), Node * node);
     static void InOrder(void(*func)(const T&), Node * node);
 
     /** @brief Traverse tree in Pre Order, performing a function on each item
@@ -144,7 +125,6 @@ private:
      * @param[in] node - Node/subtree to apply function to
      */
     static void PreOrder(void(*func)(T), Node * node);
-    static void PreOrder(void(*func)(T&), Node * node);
     static void PreOrder(void(*func)(const T&), Node * node);
 
     /** @brief Traverse tree in Post Order, performing a function on each item
@@ -153,7 +133,6 @@ private:
      * @param[in] node - Node/subtree to apply function to
      */
     static void PostOrder(void(*func)(T), Node * node);
-    static void PostOrder(void(*func)(T&), Node * node);
     static void PostOrder(void(*func)(const T&), Node * node);
 
     /** @brief Deeply copy a tree recursively
@@ -368,12 +347,6 @@ void Bst<T>::InOrder(void(*func)(T)) const
 }
 
 template <typename T>
-void Bst<T>::InOrder(void(*func)(T&))
-{
-    InOrder(func, m_root);
-}
-
-template <typename T>
 void Bst<T>::InOrder(void(*func)(const T&)) const
 {
     InOrder(func, m_root);
@@ -386,12 +359,6 @@ void Bst<T>::PreOrder(void(*func)(T)) const
 }
 
 template <typename T>
-void Bst<T>::PreOrder(void(*func)(T&))
-{
-    PreOrder(func, m_root);
-}
-
-template <typename T>
 void Bst<T>::PreOrder(void(*func)(const T&)) const
 {
     PreOrder(func, m_root);
@@ -399,12 +366,6 @@ void Bst<T>::PreOrder(void(*func)(const T&)) const
 
 template <typename T>
 void Bst<T>::PostOrder(void(*func)(T)) const
-{
-    PostOrder(func, m_root);
-}
-
-template <typename T>
-void Bst<T>::PostOrder(void(*func)(T&))
 {
     PostOrder(func, m_root);
 }
@@ -541,39 +502,6 @@ void Bst<T>::PreOrder(void(*func)(T), Node * node)
 
 template <typename T>
 void Bst<T>::PostOrder(void(*func)(T), Node * node)
-{
-    if (node != nullptr)
-    {
-        PreOrder(func, node->left);
-        PreOrder(func, node->right);
-        func(node->key);
-    }
-}
-
-template <typename T>
-void Bst<T>::InOrder(void(*func)(T&), Node * node)
-{
-    if (node != nullptr)
-    {
-        InOrder(func, node->left);
-        func(node->key);
-        InOrder(func, node->right);
-    }
-}
-
-template <typename T>
-void Bst<T>::PreOrder(void(*func)(T&), Node * node)
-{
-    if (node != nullptr)
-    {
-        func(node->key);
-        PreOrder(func, node->left);
-        PreOrder(func, node->right);
-    }
-}
-
-template <typename T>
-void Bst<T>::PostOrder(void(*func)(T&), Node * node)
 {
     if (node != nullptr)
     {
