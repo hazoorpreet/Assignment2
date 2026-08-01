@@ -35,6 +35,10 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Bst.h" />
+		<Unit filename="BstTest.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="CSVWrapper.cpp" />
 		<Unit filename="CSVWrapper.h" />
 		<Unit filename="CSVWrapperTest.cpp">
@@ -73,6 +77,10 @@
 		<Unit filename="Vector.h" />
 		<Unit filename="VectorDataOperations.cpp" />
 		<Unit filename="VectorDataOperations.h" />
+		<Unit filename="VectorDataOperationsTest.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="VectorTest.cpp">
 			<Option compile="0" />
 			<Option link="0" />
