@@ -25,7 +25,12 @@ int main()
     str_int.Erase(key);
     std::cout << "Can 'Hello' key be found after erasure?: " << str_int.Find("Hello") << "\n\n";
 
-    std::cout << "Test 5: Insert 'test key' and see if it can be read from a constant copy vs constant reference before/after clearing\n";
+    std::cout << "Test 5: Try to update 'Hello' to another value.\n";
+    str_int.Emplace(key, 10);
+    str_int[key] = 5;
+    std::cout << "Contents of 'Hello': " << str_int[key] << "\n\n";
+
+    std::cout << "Test 6: Insert 'test key' and see if it can be found from a constant copy vs constant reference before/after clearing\n";
     str_int.Emplace("test key", 5);
     Map<std::string,int> str_int_const{str_int};
     Map<std::string,int> & str_int_const_ref{str_int};
