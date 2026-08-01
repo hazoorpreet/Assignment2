@@ -31,7 +31,7 @@ int main()
     Map<std::string,int> & str_int_const_ref{str_int};
     std::cout << "Can 'test key' key be found after insertion?: " << str_int_const.Find("test key") << '\n';
     str_int.Clear();
+    std::cout << "Cleared str_int.\n";
     std::cout << "Can 'test key' key be found in the constant after original map has been cleared?: " << str_int_const.Find("test key") << '\n';
     std::cout << "Can 'test key' key be found in the constant reference now?: " << str_int_const_ref.Find("test key") << '\n';
-
 }
