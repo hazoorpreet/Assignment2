@@ -34,7 +34,7 @@ int main () {
               << "Total: " << VectorDataOperations::CalcMean(vec) << "\n\n";
 
     std::cout << "Test 3: Test Standard Deviation function\n"
-              << "Total: " << VectorDataOperations::CalcMean(vec) << "\n\n";
+              << "Total: " << VectorDataOperations::CalcSD(vec) << "\n\n";
 
     std::cout << "Test 4: Test Mean Average Deviation function\n"
               << "Total: " << VectorDataOperations::CalcMAD(vec) << "\n\n";
