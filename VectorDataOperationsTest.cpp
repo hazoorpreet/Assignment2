@@ -55,9 +55,13 @@ int main () {
     bool(*min_val_comparison)(double,double){[](double data, double flag) -> bool {return data < flag;}};
     VectorDataOperations::GetCorrelatableObjectData<DoublePair,double>(dpvec,vec,vec2,&DoublePair::GetA,&DoublePair::GetB,0,min_val_comparison);
     std::cout << "Vector 1 Size: " << vec.Size() << '\n';
-    std::cout << "Vector 2 Size: " << vec2.Size() << "\n\n";
+    std::cout << "Vector 2 Size: " << vec2.Size() << '\n';
+    for (int i{0}; i < vec.Size(); i++) {
+        std::cout << '(' << vec[i] << ',' << vec2[i] << ")\n";
+    }
+    std::cout << "\n\n";
 
     std::cout << "Test 6: Test sample Pearson Correlation Coefficient\n"
-              << "Total: " << VectorDataOperations::CalcsPCC(vec, vec2) << '\n';
+              << "sPCC: " << VectorDataOperations::CalcsPCC(vec, vec2) << '\n';
     return 0;
 }
