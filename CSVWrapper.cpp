@@ -37,6 +37,7 @@ void CSVWrapper::Close()
 
 void CSVWrapper::ExtractByColumns(const Vector<int> & column_numbers)
 {
+    m_file.clear();
     m_file.seekg(0, std::ios::beg);
     m_extraction_columns = column_numbers;
     m_output_columns.Clear();
@@ -69,12 +70,16 @@ void CSVWrapper::ExtractByColumns(const Vector<int> & column_numbers)
 
 void CSVWrapper::ExtractByColumns()
 {
+    m_file.clear();
+    m_file.seekg(0, std::ios::beg);
     ExtractByHeaders();
     m_file.seekg(0, std::ios::beg);
 }
 
 void CSVWrapper::ExtractByHeaders()
 {
+    m_file.clear();
+    m_file.seekg(0, std::ios::beg);
     Vector<std::string> file_headers;
     ExtractFileHeaders(file_headers);
     for (int i{file_headers.Size() - 1}; i >= 0; i--)
@@ -86,6 +91,8 @@ void CSVWrapper::ExtractByHeaders()
 
 void CSVWrapper::ExtractByHeaders(const Vector<std::string> & headers)
 {
+    m_file.clear();
+    m_file.seekg(0, std::ios::beg);
     Vector<std::string> file_headers;
     ExtractFileHeaders(file_headers);
 
@@ -235,4 +242,8 @@ bool CSVWrapper::GetLine(Vector<std::string> & line_data)
         return false;
     }
     return true;
+}
+
+CSVWrapper::~CSVWrapper() {
+    m_file.close();
 }
