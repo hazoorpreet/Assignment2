@@ -40,49 +40,32 @@ enum HEADERS: int
 
 int main()
 {
-    std::ifstream data_source;
-    data_source.open("data/data_source.txt");
-    if (!data_source)
-    {
-        std::cout << "File 'data/data_source.txt' could not be opened.\n";
-        return 1;
-    }
-    std::cout << std::setprecision(1) << std::fixed << std::setfill('0');
-
-    std::string file_name;
+    std::string file_name{"TestData.csv"};
     DataRecordDatabase database{};
-    CSVWrapper csv_wrapper{};
+    CSVWrapper csv{};
 
     std::cout << "Test 1: Loading data\n";
-    while (getline(data_source, file_name, '\n'))
-    {
-        while (std::isspace(file_name[file_name.size() - 1]))
-        {
-            file_name = file_name.substr(0, file_name.size() - 1);
-        }
 
-        if (!csv_wrapper.Open("data/" + file_name))
-        {
-            std::cout << "File data/" << file_name << " could not be opened.\n";
-            continue;
-        }
-        CSVToDatabase(csv_wrapper, file_name, database);
-        csv_wrapper.Close();
-        std::cout << '\n';
+    if (!csv.Open("data/TestData.csv")) {
+        std::cout << "File could not be opened.\n";
+        return -1;
     }
-    data_source.close();
 
-    std::cout << "Database Size: " << database.Size() << std::endl;
+    CSVToDatabase(csv, file_name, database);
+
+    std::cout << "Database Size: " << database.Size() << "\n\n";
     Vector<double> values;
 
     std::cout << "Test 2: Extracting data (wind speed)\n";
-    std::cout << ((database.GetMonthSpeed({0, 4, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
+    std::cout << ((database.GetMonthSpeed({0, 3, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << values.Size() << "\n\n";
 
-    std::cout << "Values:\n";
-    for (int i{0}; i < values.Size(); i++) {
+    std::cout << "Sample Values:\n";
+    for (int i{0}; i < values.Size(); i++)
+    {
         std::cout << values[i];
-        if (i != values.Size() - 1) {
+        if (i != values.Size() - 1)
+        {
             std::cout << ", ";
         }
     }
@@ -90,27 +73,31 @@ int main()
     values.Clear();
 
     std::cout << "Test 3: Extracting data (solar radiation), skipping invalid input values\n";
-    std::cout << ((database.GetMonthSolarRadiation({0, 4, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
+    std::cout << ((database.GetMonthSolarRadiation({0, 3, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << values.Size() << "\n\n";
 
-    std::cout << "Values:\n";
-    for (int i{0}; i < values.Size(); i++) {
+    std::cout << "Sample Values:\n";
+    for (int i{0}; i < values.Size(); i++)
+    {
         std::cout << values[i];
-        if (i != values.Size() - 1) {
+        if (i != values.Size() - 1)
+        {
             std::cout << ", ";
         }
     }
     std::cout << "\n\n";
     values.Clear();
 
-    std::cout << "Test 4: Extracting data (temperature)\n";
-    std::cout << ((database.GetMonthTemperature({0, 4, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
+    std::cout << "Test 4: Extracting data (temperature), should skip empty value and be 1 smaller.\n";
+    std::cout << ((database.GetMonthTemperature({0, 3, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << values.Size() << "\n\n";
 
     std::cout << "Values:\n";
-    for (int i{0}; i < values.Size(); i++) {
+    for (int i{0}; i < values.Size(); i++)
+    {
         std::cout << values[i];
-        if (i != values.Size() - 1) {
+        if (i != values.Size() - 1)
+        {
             std::cout << ", ";
         }
     }
@@ -122,10 +109,11 @@ int main()
 
     std::cout << "Test 6: Extract Records\n";
     Vector<DataRecord> records;
-    std::cout << ((database.GetMonthRecords({0, 4, 2015}, records)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
+    std::cout << ((database.GetMonthRecords({0, 3, 2015}, records)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << records.Size() << "\n\n";
     std::cout << "Sample:\n";
-    for (int i{0}; i < records.Size(); i += 50) {
+    for (int i{0}; i < records.Size(); i ++)
+    {
         std::cout << records[i] << '\n';
     }
     std::cout << '\n';
@@ -286,11 +274,13 @@ bool stringToTime(const std::string & time_string, Time & time)
     return true;
 }
 
-std::ostream & operator<<(std::ostream & output, const DataRecord & data_record) {
+std::ostream & operator<<(std::ostream & output, const DataRecord & data_record)
+{
     Date date{};
     data_record.GetDate(date);
     Time time{};
     data_record.GetTime(time);
+    std::cout << std::setfill('0') << std::fixed << std::setprecision(2);
     std::cout << date.GetDay() << '/' << std::setw(2) << date.GetMonth() << '/' << date.GetYear() << ' ' << std::setw(2) << time.GetHours() << ':' << std::setw(2) << time.GetMinutes() << " - "
               << data_record.GetSolarRadiation() << ", " << data_record.GetSpeed() << ", " << data_record.GetTemperature();
     return output;
