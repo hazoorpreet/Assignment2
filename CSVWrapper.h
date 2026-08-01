@@ -76,6 +76,11 @@ public:
      */
     bool GetLine(Vector<std::string> & line_data);
 
+    /** @brief Destructor for CSVWrapper
+     *
+     */
+    virtual ~CSVWrapper();
+
 private:
     static constexpr int COL_NOT_FOUND{-1};
     Vector<int> m_extraction_columns;

@@ -68,7 +68,7 @@ public:
 
     /** @brief Traverse tree in Order, performing a mutating function on each item
      *
-     * @param[in] func - Function done on each value.
+     * @param[in] func - Function done on each value. Must not overflow or modulo.
      */
     void InOrder(void(*func)(T&));
 
@@ -81,7 +81,7 @@ public:
 
     /** @brief Traverse tree in Pre Order, performing a mutating function on each item
      *
-     * @param[in] func - Function done on each value.
+     * @param[in] func - Function done on each value. Must not overflow or modulo.
      */
     void PreOrder(void(*func)(T&));
 
@@ -94,7 +94,7 @@ public:
 
     /** @brief Traverse tree in Post Order, performing a mutating function on each item
      *
-     * @param[in] func - Function done on each value.
+     * @param[in] func - Function done on each value. Must not overflow or modulo.
      */
     void PostOrder(void(*func)(T&));
 
@@ -120,7 +120,7 @@ private:
      * @retval True - Node successfully added and rebalanced tree
      * @retval False - Node was discarded as it already exists in the tree
      */
-    static bool Insert (Node * new_node, Node * parent);
+    static bool Insert(Node * new_node, Node * parent);
 
     /** @brief Recursively searches for a key down the length of a tree
      *
@@ -183,14 +183,14 @@ private:
      */
     static Node * Rebalance(Node * node, const Node * inserted_node);
 
-    /** @brief Left rotate a branch
+    /** @brief Left rotate a subtree and return the new root
      *
      * @param[in] branch_root - Branch to be rotated
      * @return New branch root after left rotation
      */
     static Node * LeftRotate(Node * branch_root);
 
-    /** @brief Right rotate a branch
+    /** @brief Right rotate a subtree and return the new root
      *
      * @param[in] branch_root - Branch to be rotated
      * @return New branch root after right rotation
@@ -544,8 +544,8 @@ void Bst<T>::PostOrder(void(*func)(T), Node * node)
 {
     if (node != nullptr)
     {
-        PreOrder(func, node->left);
-        PreOrder(func, node->right);
+        PostOrder(func, node->left);
+        PostOrder(func, node->right);
         func(node->key);
     }
 }
@@ -577,8 +577,8 @@ void Bst<T>::PostOrder(void(*func)(T&), Node * node)
 {
     if (node != nullptr)
     {
-        PreOrder(func, node->left);
-        PreOrder(func, node->right);
+        PostOrder(func, node->left);
+        PostOrder(func, node->right);
         func(node->key);
     }
 }
@@ -610,8 +610,8 @@ void Bst<T>::PostOrder(void(*func)(const T&), Node * node)
 {
     if (node != nullptr)
     {
-        PreOrder(func, node->left);
-        PreOrder(func, node->right);
+        PostOrder(func, node->left);
+        PostOrder(func, node->right);
         func(node->key);
     }
 }
