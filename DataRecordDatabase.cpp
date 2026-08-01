@@ -5,10 +5,9 @@ Vector<DataRecord> * DataRecordDatabase::record_collector{nullptr};
 const Date * DataRecordDatabase::record_collection_month{nullptr};
 Vector<int> * DataRecordDatabase::years_collector{nullptr};
 
+DataRecordDatabase::DataRecordDatabase(): m_db{}, m_size{}, m_years{} {};
 
 int DataRecordDatabase::Size() {return m_size;}
-
-DataRecordDatabase::DataRecordDatabase(): m_db{}, m_size{}, m_years{} {};
 
 void DataRecordDatabase::Clear() {
     m_db.Clear();
@@ -126,8 +125,6 @@ bool DataRecordDatabase::HasYear(int year) const {
 DataRecordDatabase::~DataRecordDatabase() {}; // no action required as map and bst will clean themselves up.
 
 DataRecordDatabase::DatabaseRecord::DatabaseRecord(): m_day{}, m_time{}, m_solar_radiation{}, m_speed{}, m_temperature{} {}
-
-DataRecordDatabase::DatabaseRecord::DatabaseRecord(int day, const Time & time, double solar_radiation, double speed, double temperature): m_day{day}, m_time{time}, m_solar_radiation{solar_radiation}, m_speed{speed}, m_temperature{temperature} {}
 
 DataRecordDatabase::DatabaseRecord::DatabaseRecord(const DataRecord & data_record): m_day{}, m_time{}, m_solar_radiation{data_record.GetSolarRadiation()}, m_speed{data_record.GetSpeed()}, m_temperature{data_record.GetTemperature()} {
     Date date;
