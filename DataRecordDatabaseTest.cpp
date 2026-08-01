@@ -11,7 +11,7 @@
 #include <cmath>
 #include "DataRecordDatabase.h"
 
-void CSVToDatabase(CSVWrapper & csv_wrapper, const std::string & file_name, DataRecordDatabase & database);
+void CSVToDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database);
 void InputHeaderNames(Vector<std::string> & header_names);
 void fillDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database);
 bool stringToDate(const std::string & date_string, Date & date);
@@ -40,6 +40,7 @@ enum HEADERS: int
 
 int main()
 {
+    std::cout << std::setprecision(2) << std::fixed;
     std::string file_name{"TestData.csv"};
     DataRecordDatabase database{};
     CSVWrapper csv{};
@@ -51,12 +52,12 @@ int main()
         return -1;
     }
 
-    CSVToDatabase(csv, file_name, database);
+    CSVToDatabase(csv, database);
 
     std::cout << "Database Size: " << database.Size() << "\n\n";
     Vector<double> values;
 
-    std::cout << "Test 2: Extracting data (wind speed)\n";
+    std::cout << "Test 2: Extracting data (wind speed) for March 2015\n";
     std::cout << ((database.GetMonthSpeed({0, 3, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << values.Size() << "\n\n";
 
@@ -72,7 +73,7 @@ int main()
     std::cout << "\n\n";
     values.Clear();
 
-    std::cout << "Test 3: Extracting data (solar radiation), skipping invalid input values\n";
+    std::cout << "Test 3: Extracting data (solar radiation) for March 2015, skipping invalid input values\n";
     std::cout << ((database.GetMonthSolarRadiation({0, 3, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << values.Size() << "\n\n";
 
@@ -88,7 +89,7 @@ int main()
     std::cout << "\n\n";
     values.Clear();
 
-    std::cout << "Test 4: Extracting data (temperature), should skip empty value and be 1 smaller.\n";
+    std::cout << "Test 4: Extracting data (temperature) for March 2015.\n";
     std::cout << ((database.GetMonthTemperature({0, 3, 2015}, values)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << values.Size() << "\n\n";
 
@@ -104,10 +105,10 @@ int main()
     std::cout << "\n\n";
     values.Clear();
 
-    std::cout << "Test 5: Extract non-existent month data\n";
+    std::cout << "Test 5: Extract non-existent month data (solar radiation) for for March 3002\n";
     std::cout << ((database.GetMonthSolarRadiation({0, 4, 3002}, values)) ? "Successfully Extracted" : "Extraction Failed") << "\n\n";
 
-    std::cout << "Test 6: Extract Records\n";
+    std::cout << "Test 6: Extract Records for March 2015\n";
     Vector<DataRecord> records;
     std::cout << ((database.GetMonthRecords({0, 3, 2015}, records)) ? "Successfully Extracted" : "Extraction Failed") << '\n';
     std::cout << "Size: " << records.Size() << "\n\n";
@@ -122,51 +123,17 @@ int main()
 }
 
 
-void CSVToDatabase(CSVWrapper & csv_wrapper, const std::string & file_name, DataRecordDatabase & database)
+void CSVToDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database)
 {
     Vector<std::string> headers_to_extract{HEADERS_SIZE};
-    std::cout << "Please enter the headers for file " << file_name << "\n\n";
-    InputHeaderNames(headers_to_extract);
+    headers_to_extract[HEADERS_WAST] = "WAST";
+    headers_to_extract[HEADERS_TEMPERATURE] = "T";
+    headers_to_extract[HEADERS_SPEED] = "S";
+    headers_to_extract[HEADERS_SOLAR_RADIATION] = "SR";
 
     csv_wrapper.ExtractByHeaders(headers_to_extract);
 
     fillDatabase(csv_wrapper, database);
-}
-
-void InputHeaderNames(Vector<std::string> & header_names)
-{
-    while (header_names.Size() < HEADERS_SIZE)
-    {
-        header_names.Insert(header_names.Size(), "");
-    }
-
-    std::cout << "Enter the header for Date & Time (Default: WAST): ";
-    getline(std::cin, header_names[HEADERS_WAST]);
-    if (header_names[HEADERS_WAST].empty())
-    {
-        header_names[HEADERS_WAST] = "WAST";
-    }
-
-    std::cout << "Enter the header for Solar Radiation (Default: SR): ";
-    getline(std::cin, header_names[HEADERS_SOLAR_RADIATION]);
-    if (header_names[HEADERS_SOLAR_RADIATION].empty())
-    {
-        header_names[HEADERS_SOLAR_RADIATION] = "SR";
-    }
-
-    std::cout << "Enter the header for Speed (Default: S): ";
-    getline(std::cin, header_names[HEADERS_SPEED]);
-    if (header_names[HEADERS_SPEED].empty())
-    {
-        header_names[HEADERS_SPEED] = "S";
-    }
-
-    std::cout << "Enter the header for Temperature (Default: T): ";
-    getline(std::cin, header_names[HEADERS_TEMPERATURE]);
-    if (header_names[HEADERS_TEMPERATURE].empty())
-    {
-        header_names[HEADERS_TEMPERATURE] = "T";
-    }
 }
 
 void fillDatabase(CSVWrapper & csv_wrapper, DataRecordDatabase & database)
