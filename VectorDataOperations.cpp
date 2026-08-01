@@ -1,5 +1,7 @@
 #include "VectorDataOperations.h"
 
+VectorDataOperations::VectorDataOperations() {};
+
 double VectorDataOperations::CalcTotal(const Vector<double> & data)
 {
     double total{0};
