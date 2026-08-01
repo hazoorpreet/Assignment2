@@ -23,7 +23,6 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
 void outputYearData(std::ostream & output, const DataRecordDatabase & database, int selected_year);
 void DisplayMenu();
 int NumInput(const std::string & prompt, int minimum, int maximum);
-template <typename T, typename U>
 
 enum MENU: int
 {
