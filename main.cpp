@@ -24,7 +24,6 @@ void outputYearData(std::ostream & output, const DataRecordDatabase & database, 
 void DisplayMenu();
 int NumInput(const std::string & prompt, int minimum, int maximum);
 template <typename T, typename U>
-void GetCorrelatableObjectData(const Vector<T> & items, Vector<U> & data_a, Vector<U> & data_b, U(T::*get_data_a)() const, U(T::*get_data_b)() const, U min_val);
 
 enum MENU: int
 {
