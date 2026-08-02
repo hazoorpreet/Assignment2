@@ -364,7 +364,7 @@ void outputMonthlyAirTemp(const DataRecordDatabase & database, int selected_year
 void outputsPCCComparisons(const DataRecordDatabase & database, int selected_month)
 {
 
-    std::cout << std::fixed << std::setprecision(3);
+    std::cout << std::fixed << std::setprecision(2);
     std::cout << "Sample Pearson Correlation Coefficient for " << MonthString(selected_month) << '\n';
     Vector<int> years;
     Vector<DataRecord> month_data;
@@ -396,7 +396,7 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
     std::cout << "S_T: ";
     if (data_a.Size() == 0)
     {
-        std::cout << "No correlative data.\n";
+        std::cout << "No correlative data available.\n";
     }
     else
     {
@@ -410,7 +410,7 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
     std::cout << "S_R: ";
     if (data_a.Size() == 0)
     {
-        std::cout << "No correlative data.\n";
+        std::cout << "No correlative data available.\n";
     }
     else
     {
@@ -424,7 +424,7 @@ void outputsPCCComparisons(const DataRecordDatabase & database, int selected_mon
     std::cout << "T_R: ";
     if (data_a.Size() == 0)
     {
-        std::cout << "No correlative data.\n";
+        std::cout << "No correlative data available.\n";
     }
     else
     {
