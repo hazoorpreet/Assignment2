@@ -59,31 +59,31 @@ public:
      *
      * @param[in] other Other time to compare against
      */
-     bool operator==(const Time & other) const;
+    bool operator==(const Time & other) const;
 
-     /** @brief Compare greater than
-     *
-     * @param[in] other Other time to compare against
-     */
-     bool operator>(const Time & other) const;
+    /** @brief Compare greater than
+    *
+    * @param[in] other Other time to compare against
+    */
+    bool operator>(const Time & other) const;
 
-     /** @brief Compare less than
-     *
-     * @param[in] other Other time to compare against
-     */
-     bool operator<(const Time & other) const;
+    /** @brief Compare less than
+    *
+    * @param[in] other Other time to compare against
+    */
+    bool operator<(const Time & other) const;
 
-     /** @brief Compare greater than or equal
-     *
-     * @param[in] other Other time to compare against
-     */
-     bool operator>=(const Time & other) const;
+    /** @brief Compare greater than or equal
+    *
+    * @param[in] other Other time to compare against
+    */
+    bool operator>=(const Time & other) const;
 
-     /** @brief Compare less than or equal
-     *
-     * @param[in] other Other time to compare against
-     */
-     bool operator<=(const Time & other) const;
+    /** @brief Compare less than or equal
+    *
+    * @param[in] other Other time to compare against
+    */
+    bool operator<=(const Time & other) const;
 
 private:
     int m_hours;

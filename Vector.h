@@ -127,11 +127,16 @@ template <typename T> void Vector<T>::Clear()
 
 template <typename T> bool Vector<T>::Insert(int index, const T &data)
 {
-    if (index > Size() or index < 0) {
+    if (index > Size() or index < 0)
+    {
         return false;
-    } else if (index == Size()) {
+    }
+    else if (index == Size())
+    {
         m_vector.push_back(data);
-    } else {
+    }
+    else
+    {
         m_vector.insert(m_vector.begin() + index, data);
     }
     return true;

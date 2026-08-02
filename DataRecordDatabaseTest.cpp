@@ -47,7 +47,8 @@ int main()
 
     std::cout << "Test 1: Loading data\n";
 
-    if (!csv.Open("data/TestData.csv")) {
+    if (!csv.Open("data/TestData.csv"))
+    {
         std::cout << "File could not be opened.\n";
         return -1;
     }

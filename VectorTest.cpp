@@ -1,7 +1,8 @@
 #include <iostream>
 #include "Vector.h"
 
-int main() {
+int main()
+{
     std::cout << "Test 1: Creation of an empty vector.\n";
     Vector<int> myVec{};
     std::cout << "Vector Size: " << myVec.Size() << '\n';

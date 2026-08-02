@@ -24,7 +24,8 @@ int main()
     std::cout << "\n\n";
 }
 
-ostream & operator<<(std::ostream & output, Time time) {
+ostream & operator<<(std::ostream & output, Time time)
+{
     output << std::right << std::setfill('0');
     output << std::setw(2) << time.GetHours() << ':' << std::setw(2) << time.GetMinutes() << ':'
            << std::setw(2) << time.GetSeconds();

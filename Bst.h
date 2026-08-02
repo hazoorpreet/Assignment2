@@ -206,7 +206,8 @@ private:
 };
 
 template <typename T>
-int Bst<T>::max(int a, int b) {
+int Bst<T>::max(int a, int b)
+{
     return (a > b) ? a : b;
 }
 
@@ -304,7 +305,8 @@ Bst<T>::Bst(const Bst<T> & other): m_root{nullptr}
 template <typename T>
 Bst<T> & Bst<T>::operator=(const Bst<T> & other)
 {
-    if (this == &other) {
+    if (this == &other)
+    {
         return *this;
     }
     Clear();

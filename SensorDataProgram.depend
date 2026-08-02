@@ -140,7 +140,7 @@
 	<string>
 	<fstream>
 
-1784310906 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Vector.h
+1785656642 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Vector.h
 	<vector>
 
 1783941209 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataLog.cpp
@@ -152,11 +152,11 @@
 	"Vector.h"
 	"DataRecord.h"
 
-1784363142 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.h
+1785656638 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.h
 
 1784463580 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Date.h
 
-1783145723 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecord.h
+1785656618 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecord.h
 	"Date.h"
 	"Time.h"
 
@@ -169,7 +169,7 @@
 1784363105 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Time.cpp
 	"Time.h"
 
-1785653561 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/main.cpp
+1785653652 source:/home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/main.cpp
 	"CSVWrapper.h"
 	"DataRecord.h"
 	"DataRecordDatabase.h"
@@ -189,7 +189,7 @@
 	"CSVWrapper.h"
 	"Vector.h"
 
-1785171379 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecordDatabase.h
+1785656623 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/DataRecordDatabase.h
 	"DataRecord.h"
 	"Bst.h"
 	"Map.h"
@@ -197,9 +197,9 @@
 	"Time.h"
 	"Vector.h"
 
-1785344656 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Bst.h
+1785656607 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Bst.h
 
-1785176437 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Map.h
+1785656633 /home/ex3mpted/Documents/Kaplan Murdoch CS/ICT283 Data Structures and Abstractions/Code/Assignment2/Map.h
 	<map>
 	"Vector.h"
 

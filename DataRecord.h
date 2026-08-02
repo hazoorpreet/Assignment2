@@ -10,7 +10,8 @@
  * @author Hazoorpreet Singh
  * @date   19/06/2026
  */
-class DataRecord {
+class DataRecord
+{
 public:
     static constexpr double MIN_VAL{-40};
 

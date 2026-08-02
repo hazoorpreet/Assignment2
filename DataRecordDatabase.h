@@ -13,13 +13,15 @@
  * @author Hazoorpreet Singh
  * @date   19 July 2026
  */
-class DataRecordDatabase{
+class DataRecordDatabase
+{
 private:
 
     /** @brief Stripped down DataRecord without year and month.
      *
      */
-    class DatabaseRecord{
+    class DatabaseRecord
+    {
     public:
 
         /** @brief Default constructor for database record.

@@ -4,10 +4,12 @@
 
 std::ostream & operator<<(std::ostream & output, const Vector<std::string> & data);
 
-int main() {
+int main()
+{
 
     CSVWrapper csv{};
-    if (!csv.Open("data/TestData.csv")) {
+    if (!csv.Open("data/TestData.csv"))
+    {
         std::cout << "File could not be opened.\n";
         return -1;
     }
@@ -28,28 +30,32 @@ int main() {
 
     csv.ExtractByHeaders();
     std::cout << "Test 1: Output via all headers\n";
-    while (csv.GetLine(output)) {
+    while (csv.GetLine(output))
+    {
         std::cout << output;
     }
     std::cout << "\n\n";
 
     csv.ExtractByHeaders(headers_to_extract);
     std::cout << "Test 2: Output via select headers\n";
-    while (csv.GetLine(output)) {
+    while (csv.GetLine(output))
+    {
         std::cout << output;
     }
     std::cout << "\n\n";
 
     csv.ExtractByColumns();
     std::cout << "Test 3: Output via all columns\n";
-    while (csv.GetLine(output)) {
+    while (csv.GetLine(output))
+    {
         std::cout << output;
     }
     std::cout << "\n\n";
 
     csv.ExtractByColumns(columns_to_extract);
     std::cout << "Test 4: Output via select columns\n";
-    while (csv.GetLine(output)) {
+    while (csv.GetLine(output))
+    {
         std::cout << output;
     }
     std::cout << "\n\n";
@@ -66,8 +72,10 @@ int main() {
     return 0;
 }
 
-std::ostream & operator<<(std::ostream & output, const Vector<std::string> & data) {
-    for (int i{0}; i < data.Size(); i++) {
+std::ostream & operator<<(std::ostream & output, const Vector<std::string> & data)
+{
+    for (int i{0}; i < data.Size(); i++)
+    {
         output << data[i] << ' ';
     }
     output << '\n';

@@ -4,20 +4,34 @@
 #include <iomanip>
 
 // Custom class only used for testing
-class DoublePair {
+class DoublePair
+{
 public:
     DoublePair(): m_a{0}, m_b{0} {};
     DoublePair(double a, double b): m_a{a}, m_b{b} {};
-    double GetA() const { return m_a; };
-    double GetB() const { return m_b; };
-    void SetA(double a) { m_a = a; };
-    void SetB(double b) { m_b = b; };
+    double GetA() const
+    {
+        return m_a;
+    };
+    double GetB() const
+    {
+        return m_b;
+    };
+    void SetA(double a)
+    {
+        m_a = a;
+    };
+    void SetB(double b)
+    {
+        m_b = b;
+    };
 private:
     double m_a;
     double m_b;
 };
 
-int main () {
+int main ()
+{
     std::cout << std::fixed << std::setprecision(2);
     Vector<double> vec{};
     vec.Insert(vec.Size(), 5);
@@ -52,11 +66,15 @@ int main () {
     dpvec.Insert(dpvec.Size(), {35,-4});
     vec.Clear();
     Vector<double> vec2{};
-    bool(*min_val_comparison)(double,double){[](double data, double flag) -> bool {return data < flag;}};
+    bool(*min_val_comparison)(double,double)
+    {
+        [](double data, double flag) -> bool {return data < flag;}
+    };
     VectorDataOperations::GetCorrelatableObjectData<DoublePair,double>(dpvec,vec,vec2,&DoublePair::GetA,&DoublePair::GetB,0,min_val_comparison);
     std::cout << "Vector 1 Size: " << vec.Size() << '\n';
     std::cout << "Vector 2 Size: " << vec2.Size() << '\n';
-    for (int i{0}; i < vec.Size(); i++) {
+    for (int i{0}; i < vec.Size(); i++)
+    {
         std::cout << '(' << vec[i] << ',' << vec2[i] << ")\n";
     }
     std::cout << "\n\n";

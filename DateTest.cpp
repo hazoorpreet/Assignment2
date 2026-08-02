@@ -28,10 +28,11 @@ int main()
     std::cout << "\n\n";
 }
 
-std::ostream & operator<<(std::ostream & output, Date date) {
+std::ostream & operator<<(std::ostream & output, Date date)
+{
     output << std::right << std::setfill('0');
     output << std::setw(2) << date.GetDay() << '/' << std::setw(2) << date.GetMonth() << '/'
-         << std::setw(2) << date.GetYear();
+           << std::setw(2) << date.GetYear();
     output << std::setfill(' ') << std::left;
     return output;
 }

@@ -244,6 +244,7 @@ bool CSVWrapper::GetLine(Vector<std::string> & line_data)
     return true;
 }
 
-CSVWrapper::~CSVWrapper() {
+CSVWrapper::~CSVWrapper()
+{
     m_file.close();
 }

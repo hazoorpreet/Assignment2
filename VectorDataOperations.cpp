@@ -18,7 +18,8 @@ double VectorDataOperations::CalcMean(const Vector<double> & data)
     return CalcTotal(data) / data.Size();
 }
 
-double VectorDataOperations::CalcSD(const Vector<double> & data) {
+double VectorDataOperations::CalcSD(const Vector<double> & data)
+{
     double mean{CalcMean(data)};
     double processed_sum{0};
 
@@ -30,8 +31,10 @@ double VectorDataOperations::CalcSD(const Vector<double> & data) {
     return std::sqrt(processed_sum / (data.Size() - 1));
 }
 
-double VectorDataOperations::CalcsPCC(const Vector<double> & data_a, const Vector<double> & data_b) {
-    if (data_a.Size() != data_b.Size()) {
+double VectorDataOperations::CalcsPCC(const Vector<double> & data_a, const Vector<double> & data_b)
+{
+    if (data_a.Size() != data_b.Size())
+    {
         throw std::domain_error("Error: Samples are of different sizes.");
     }
 
@@ -44,7 +47,8 @@ double VectorDataOperations::CalcsPCC(const Vector<double> & data_a, const Vecto
     double processing_a{};
     double processing_b{};
 
-    for (int i{0}; i < data_a.Size(); i++) {
+    for (int i{0}; i < data_a.Size(); i++)
+    {
         processing_a = data_a[i] - mean_a;
         processing_b = data_b[i] - mean_b;
         processed_a += processing_a*processing_a;
@@ -56,11 +60,13 @@ double VectorDataOperations::CalcsPCC(const Vector<double> & data_a, const Vecto
 
 }
 
-double VectorDataOperations::CalcMAD(const Vector<double> & data) {
+double VectorDataOperations::CalcMAD(const Vector<double> & data)
+{
     double mean{CalcMean(data)};
     double processed_sum{0};
 
-    for (int i{0}; i < data.Size(); i++) {
+    for (int i{0}; i < data.Size(); i++)
+    {
         processed_sum += std::abs(data[i] - mean);
     }
 
